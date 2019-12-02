@@ -22,8 +22,8 @@
                     <div class="col-lg-6">
                         <div class="card m-b-20">
                             <div class="card-body">
-                                <h4 class="mt-0 header-title">Chia Sẻ Bài Viết Lên Nhóm</h4>
-                                <p class="text-muted m-b-30">Giúp bạn chia sẻ bài viết trên fanpage đến tất cả các nhóm bạn đang tham gia</p>
+                                <h4 class="mt-0 header-title">Đăng Bài Viết Bán Hàng</h4>
+                                <p class="text-muted m-b-30">Đăng bài viết bán hàng trên các nhóm bạn tham gia</p>
                                 <form class="" action="#" novalidate="">
                                 <div class="form-group">
                                     <label>Danh sách Cookies ( Cách nhau 1 dòng )</label>

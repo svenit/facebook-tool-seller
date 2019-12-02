@@ -2,13 +2,11 @@
 
     namespace App\Controllers\Auth;
     use App\Model\Connect as Builder;
-    use App\Helper\Curl;
     use PDO;
     session_start();
-
     class LoginController extends Builder
     {
-        public function attempt($username,$password)
+        public function attempt($username,$password,$remember)
         {
             try
             {

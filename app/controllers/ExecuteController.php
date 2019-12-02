@@ -136,13 +136,13 @@ class ExecuteController extends BaseController
                 'fb_dtsg' => $request['fb_dtsg'],
                 '__spin_t' => 1575217879,
             ];
-            $share = $this->requestWithFields($endpoint,$data,$request['cookie']);
+            $this->requestWithFields($endpoint,$data,$request['cookie']);
             return json_encode([
                 'post_id' => $request['postId'],
                 'group_name' => $request['groupName'], 
                 'status' => 200,
                 'type' => 'success',
-                'msg' => 'Chia sẻ thành công !',
+                'msg' => 'Chia sẻ bài viết thành công !',
                 'group_id' => $request['idGroup']
             ]);
         }
@@ -168,6 +168,30 @@ class ExecuteController extends BaseController
                 'groupName' => preg_match('#<title id="pageTitle">(.+?)</title>#is',$checkStatus, $matches) ? $matches[1] : '???'
             ];
         }
+    }
+    public function postToMarket($request)
+    {
+        $endpoint = "https://www.facebook.com/async/publisher/creation-hooks/?av=".$request['id'];
+        $data = [
+            'data[audience][to_id]' => $request['idGroup'],
+            'data[web_graphml_migration_params][target_type]' => 'group',
+            'data[web_graphml_migration_params][xhpc_composerid]' => 'rc.u_0_21',
+            'data[web_graphml_migration_params][xhpc_context]' => 'profile',
+            'data[web_graphml_migration_params][xhpc_publish_type]' => 1,
+            'data[web_graphml_migration_params][waterfall_id]' => '90d7e4b7-6a59-4ed4-80ac-75d58e922175',
+            'data[web_graphml_migration_params][xpost_target_ids]' => $request['idGroup'],
+            'data[is_local_dev_platform_app_instance]' => false,
+            'data[is_page_recommendation]' => false,
+            'data[media_attachments][0][photo][id]' => 818124525286475,
+            'data[logging_ref]' => 'group',
+            'story_id' => 'UzpfSTEwMDAxMjY2ODA1MTM2MjpWSzo1NTQ0NzUxNDg2ODA0MzM=',
+            '__spin_t' => 1575262380,
+            '__spin_b' => 'trunk',
+            '__spin_r' => 1001480500,
+            'jazoest' => 22087,
+            'fb_dtsg' => $request['fb_dtsg'],
+        ];
+        return $this->requestWithFields($endpoint,$data,$request['cookie']);
     }
     public function regex($data)
     {

@@ -107,6 +107,11 @@
                                         <label>Mật khẩu</label>
                                         <div><input name="login_password" type="password" class="form-control post-id" required="" placeholder=""></div>
                                     </div>
+                                    <!-- <div style="margin-left:-20px" class="custom-control custom-switch">
+                                        <p>Nhớ đăng nhập ?</p>
+                                        <input type="checkbox" name="remember" id="switch1" switch="none" data-parsley-multiple="switch1">
+                                        <label for="switch1" data-on-label="Yes" data-off-label="No"></label>
+                                    </div> -->
                                     <div class="form-group">
                                         <div>
                                             <button type="submit" name="login" class="btn btn-primary waves-effect waves-light submit">Đăng Nhập</button> 
@@ -118,7 +123,7 @@
                                     if(isset($_POST['login']))
                                     {
 
-                                        $login = $login->attempt($_POST['login_username'],$_POST['login_password']);
+                                        $login = $login->attempt($_POST['login_username'],$_POST['login_password'],$_POST['remember']);
                                         if(isset($login['status']))
                                         {
                                             ?>

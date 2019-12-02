@@ -26,7 +26,7 @@
                                     <div class="dropdown notification-list nav-pro-img xss">
                                         <a class="dropdown-toggle nav-link arrow-none nav-user" data-toggle="dropdown" href="#"
                                             role="button" aria-haspopup="false" aria-expanded="false"><img
-                                                src="https://image.flaticon.com/icons/svg/149/149071.svg" alt="user"
+                                                src="<?php echo isset($_SESSION['user']) ? "https://ui-avatars.com/api/?background=cef2ef&length=1&color=26998d&name=".$_SESSION['user'][0]->name : 'https://image.flaticon.com/icons/svg/149/149071.svg' ?>" alt="user"
                                                 class="rounded-circle"></a>
                                         <div class="dropdown-menu dropdown-menu-right profile-dropdown">
                                             <a class="dropdown-item d-block" href="#"><i
@@ -87,7 +87,7 @@
                         <ul class="submenu megamenu">
                             <li>
                                 <ul>
-                                    <li><a href="share-live-stream?#">Chia Sẻ</a></li>
+                                    <li><a href="share-live-stream?#">Chia Sẻ Lên Nhóm</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -105,7 +105,7 @@
                     <li class="has-submenu">
                         <a href="#"><i class="fas fa-users"></i> Nhóm</a>
                         <ul class="submenu">
-                            <li><a href="#">Lấy ID Thành Viên</a></li>
+                            <li><a href="post-market?#">Đăng Bài Viết Bán Hàng</a></li>
                             <li><a href="#">Quét Bài Viết</a></li>
                             <li><a href="#">Auto Tham Gia Nhóm</a></li>
                         </ul>
