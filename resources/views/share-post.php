@@ -1,6 +1,6 @@
 <?php
     session_start();
-    $_SESSION['js'] = 'post/share.js';
+    $_SESSION['js'] = 'app.js';
 ?>
 <!DOCTYPE html>
 <html>
@@ -101,8 +101,8 @@
                                 </div>
                                 <div class="form-group">
                                     <div>
-                                        <button type="submit" v-if="options.getGroupId == 'custome' && listGroupId.length > 0 || copyListGroupId.length > 0" @click='share()' class="btn btn-primary waves-effect waves-light submit">Bắt Đầu ( {{ customeListGroupId.length }} )</button> 
-                                        <button type="submit" v-else @click='request()' class="btn btn-primary waves-effect waves-light submit">{{ options.getGroupId == 'custome' && listGroupId.length == 0 && copyListGroupId.length == 0 ? 'Lấy Danh Sách ID Nhóm' : 'Bắt Đầu' }}</button> 
+                                        <button type="submit" v-if="options.getGroupId == 'custome' && listGroupId.length > 0 || copyListGroupId.length > 0" @click="share(null,null,null,'share-post')" class="btn btn-primary waves-effect waves-light submit">Bắt Đầu ( {{ customeListGroupId.length }} )</button> 
+                                        <button type="submit" v-else @click="request('share-post')" class="btn btn-primary waves-effect waves-light submit">{{ options.getGroupId == 'custome' && listGroupId.length == 0 && copyListGroupId.length == 0 ? 'Lấy Danh Sách ID Nhóm' : 'Bắt Đầu' }}</button> 
                                     </div>
                                 </div>
                                 </form>

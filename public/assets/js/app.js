@@ -28,7 +28,7 @@ new Vue({
         }
     },
     methods:{
-        async request()
+        async request(route)
         {
             
             if(this.input.cookie.trim() && this.input.postId.trim())
@@ -53,7 +53,7 @@ new Vue({
                                 id:res.data.id,
                                 fb_dtsg:res.data.fb_dtsg
                             };
-                            await this.getGroupId(cookies[key],res.data.id,res.data.fb_dtsg);
+                            await this.getGroupId(cookies[key],res.data.id,res.data.fb_dtsg,route);
                         }
                         else
                         {
@@ -67,7 +67,7 @@ new Vue({
                             });
                             this.copyListGroupId = this.listGroupId;
                             this.toast('Lấy danh sách thành công','success');
-                            await this.share(cookies[key],res.data.id,res.data.fb_dtsg);
+                            await this.share(cookies[key],res.data.id,res.data.fb_dtsg,route);
                         }
                     }
                 }
@@ -78,7 +78,7 @@ new Vue({
                 swal('','Bạn chưa nhập đầy đủ thông tin','info');
             }
         },
-        async getGroupId(cookie,id,fb_dtsg)
+        async getGroupId(cookie,id,fb_dtsg,route)
         {
             this.loading = true;
             this.toast('Đang tìm kiếm danh sách nhóm','warning');
@@ -94,7 +94,7 @@ new Vue({
                 this.copyListGroupId = this.listGroupId;
                 if(this.options.getGroupId == 'all')
                 {
-                    this.share(cookie,id,fb_dtsg);
+                    this.share(cookie,id,fb_dtsg,route);
                 }
             }
             this.loading = false;
@@ -105,7 +105,7 @@ new Vue({
             this.toast(`${ms/1000}s sau sẽ thực hiện tiến trình`,'info');
             return new Promise(resolve => setTimeout(resolve, ms));
         },
-        async share(cookie,id,fb_dtsg)
+        async share(cookie,id,fb_dtsg,route)
         {
             if(this.options.getGroupId == 'custome')
             {
@@ -117,7 +117,6 @@ new Vue({
             {
                 const messages = this.input.content.split("\n");
                 let randomMsg = messages[Math.floor((Math.random() * messages.length))];
-                
                 await this.sleep(1000 * this.input.sleep);
                 console.log(`%c => ${key}. Tiến hành share bài viết vào nhóm ${this.listGroupId[key].name} ( ${this.listGroupId[key].id} )`,'background: #222; color: #bada55');
                 this.toast(`Đang tiến hành share bài viết vào nhóm ${this.listGroupId[key].name} ( ${this.listGroupId[key].id} )`,'warning');
@@ -129,12 +128,13 @@ new Vue({
                     postId:parseInt(this.input.postId),
                     idGroup:parseInt(this.listGroupId[key].id),
                     groupName:this.listGroupId[key].name,
-                    route:'share-live-stream'
+                    route:route
                 });
                 this.toast(res.data.msg,res.data.type);
                 if(res.data.status == 200)
                 {
                     this.listSuccess.push(res.data);
+                    this.listGroupId[key].published = true;
                     $('.data-list').animate({scrollTop: document.body.scrollHeight},'fast');
                 }
                 else
@@ -171,7 +171,7 @@ new Vue({
         {
             this.current = n;
             this.listGroupId = this.copyListGroupId;
-            this.listGroupId = this.listGroupId.slice(n - 1,n + this.paginate - 1);
+            this.listGroupId = this.listGroupId.slice((n * this.paginate) - this.paginate,n * this.paginate);
         },
         searchGroup(e)
         {

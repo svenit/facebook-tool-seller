@@ -1,6 +1,6 @@
 <?php
     session_start();
-    $_SESSION['js'] = 'post/share.js';
+    $_SESSION['js'] = 'app.js';
 ?>
 <!DOCTYPE html>
 <html>
@@ -22,8 +22,8 @@
                     <div class="col-lg-8">
                         <div class="card m-b-20">
                             <div class="card-body">
-                                <h4 class="mt-0 header-title">Chia Sẻ Video Live Stream</h4>
-                                <p class="text-muted m-b-30">Giúp bạn chia sẻ video live stream đến tất cả nhóm bạn tham gia</p>
+                                <h4 class="mt-0 header-title">Chia Sẻ Live Stream</h4>
+                                <p class="text-muted m-b-30">Giúp bạn chia sẻ video live stream đến tất cả các nhóm bạn đang tham gia</p>
                                 <form class="" action="#" novalidate="">
                                 <div class="form-group">
                                     <label>Danh sách Cookies ( Cách nhau 1 dòng )</label>
@@ -58,8 +58,8 @@
                                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                                         <a class="dropdown-item" @click="paginate = 10">10</a>
                                                         <a class="dropdown-item" @click="paginate = 25">25</a>
-                                                        <a class="dropdown-item" @click="paginate = 25">50</a>
-                                                        <a class="dropdown-item" @click="paginate = 25">100</a>
+                                                        <a class="dropdown-item" @click="paginate = 50">50</a>
+                                                        <a class="dropdown-item" @click="paginate = 100">100</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -67,16 +67,18 @@
                                         <thead>
                                             <tr>
                                                 <th class="text-center" scope="col">STT</th>
-                                                <th class="text-center" scope="col">Tên Nhóm</th>
+                                                <th style="width:200px" class="text-center" scope="col">Tên Nhóm</th>
                                                 <th class="text-center" scope="col">ID</th>
+                                                <th class="text-center" scope="col">Đã Đăng</th>
                                                 <th class="text-center" scope="col">Chọn</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr v-for="(group,index) in listGroupId" :key="index" v-if="index <= paginate">
                                                 <th class="text-center" scope="row">{{ ((current * paginate) + index + 1) - paginate  }}</th>
-                                                <td class="text-center">{{ group.name }}</td>
+                                                <td style="width:200px" class="text-center"><a target="_blank" :href="`https://facebook.com/${group.id}`">{{ group.name }}</td>
                                                 <td class="text-center">{{ group.id }}</td>
+                                                <td class="text-center"><i :style="{color:group.published ? '#5ec757' : '#e67070'}" :class="[group.published ? 'fas fa-check-circle' : 'fas fa-times']"></i></td>
                                                 <td class="text-center"><input v-model="customeListGroupId" :value="{id:group.id,name:group.name}" type="checkbox"></td>
                                             </tr>
                                         </tbody>
@@ -99,8 +101,8 @@
                                 </div>
                                 <div class="form-group">
                                     <div>
-                                        <button type="submit" v-if="options.getGroupId == 'custome' && listGroupId.length > 0 || copyListGroupId.length > 0" @click='share()' class="btn btn-primary waves-effect waves-light submit">Bắt Đầu ( {{ customeListGroupId.length }} )</button> 
-                                        <button type="submit" v-else @click='request()' class="btn btn-primary waves-effect waves-light submit">{{ options.getGroupId == 'custome' && listGroupId.length == 0 && copyListGroupId.length == 0 ? 'Lấy Danh Sách ID Nhóm' : 'Bắt Đầu' }}</button> 
+                                        <button type="submit" v-if="options.getGroupId == 'custome' && listGroupId.length > 0 || copyListGroupId.length > 0" @click="share(null,null,null,'share-live-stream')" class="btn btn-primary waves-effect waves-light submit">Bắt Đầu ( {{ customeListGroupId.length }} )</button> 
+                                        <button type="submit" v-else @click="request('share-live-stream')" class="btn btn-primary waves-effect waves-light submit">{{ options.getGroupId == 'custome' && listGroupId.length == 0 && copyListGroupId.length == 0 ? 'Lấy Danh Sách ID Nhóm' : 'Bắt Đầu' }}</button> 
                                     </div>
                                 </div>
                                 </form>
