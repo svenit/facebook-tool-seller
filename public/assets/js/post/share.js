@@ -117,7 +117,6 @@ new Vue({
             {
                 const messages = this.input.content.split("\n");
                 let randomMsg = messages[Math.floor((Math.random() * messages.length))];
-                
                 await this.sleep(1000 * this.input.sleep);
                 console.log(`%c => ${key}. Tiến hành share bài viết vào nhóm ${this.listGroupId[key].name} ( ${this.listGroupId[key].id} )`,'background: #222; color: #bada55');
                 this.toast(`Đang tiến hành share bài viết vào nhóm ${this.listGroupId[key].name} ( ${this.listGroupId[key].id} )`,'warning');
@@ -135,6 +134,7 @@ new Vue({
                 if(res.data.status == 200)
                 {
                     this.listSuccess.push(res.data);
+                    this.listGroupId[key].published = true;
                     $('.data-list').animate({scrollTop: document.body.scrollHeight},'fast');
                 }
                 else
@@ -171,7 +171,7 @@ new Vue({
         {
             this.current = n;
             this.listGroupId = this.copyListGroupId;
-            this.listGroupId = this.listGroupId.slice(n - 1,n + this.paginate - 1);
+            this.listGroupId = this.listGroupId.slice((n * this.paginate) - this.paginate,n * this.paginate);
         },
         searchGroup(e)
         {

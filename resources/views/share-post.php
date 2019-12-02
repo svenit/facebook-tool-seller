@@ -58,8 +58,8 @@
                                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                                         <a class="dropdown-item" @click="paginate = 10">10</a>
                                                         <a class="dropdown-item" @click="paginate = 25">25</a>
-                                                        <a class="dropdown-item" @click="paginate = 25">50</a>
-                                                        <a class="dropdown-item" @click="paginate = 25">100</a>
+                                                        <a class="dropdown-item" @click="paginate = 50">50</a>
+                                                        <a class="dropdown-item" @click="paginate = 100">100</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -67,16 +67,18 @@
                                         <thead>
                                             <tr>
                                                 <th class="text-center" scope="col">STT</th>
-                                                <th class="text-center" scope="col">Tên Nhóm</th>
+                                                <th style="width:200px" class="text-center" scope="col">Tên Nhóm</th>
                                                 <th class="text-center" scope="col">ID</th>
+                                                <th class="text-center" scope="col">Đã Đăng</th>
                                                 <th class="text-center" scope="col">Chọn</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr v-for="(group,index) in listGroupId" :key="index" v-if="index <= paginate">
                                                 <th class="text-center" scope="row">{{ ((current * paginate) + index + 1) - paginate  }}</th>
-                                                <td class="text-center">{{ group.name }}</td>
+                                                <td style="width:200px" class="text-center"><a target="_blank" :href="`https://facebook.com/${group.id}`">{{ group.name }}</td>
                                                 <td class="text-center">{{ group.id }}</td>
+                                                <td class="text-center"><i :style="{color:group.published ? '#5ec757' : '#e67070'}" :class="[group.published ? 'fas fa-check-circle' : 'fas fa-times']"></i></td>
                                                 <td class="text-center"><input v-model="customeListGroupId" :value="{id:group.id,name:group.name}" type="checkbox"></td>
                                             </tr>
                                         </tbody>
