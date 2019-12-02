@@ -3,17 +3,20 @@
     error_reporting(0);
     session_start();
     $_SESSION['js'] = 'index/no.js';
-    if(isset($_SESSION['user']))
+    require __DIR__.'../../../vendor/autoload.php';
+    require __DIR__.'../../../app/middleware/auth.php';
+
+    $_SESSION['js'] = 'index/no.js';
+    if(isset($_SESSION['user']) || !$auth->config('auth.authenticate'))
     {
         header("Location: index.php");
     }
-    require __DIR__.'../../../vendor/autoload.php';
-
     use App\Controllers\Auth\LoginController;
     use App\Controllers\Auth\RegisterController;
 
     $login = new LoginController();
     $signup = new RegisterController();
+
 
 ?>
 <!DOCTYPE html>
@@ -107,11 +110,6 @@
                                         <label>Mật khẩu</label>
                                         <div><input name="login_password" type="password" class="form-control post-id" required="" placeholder=""></div>
                                     </div>
-                                    <!-- <div style="margin-left:-20px" class="custom-control custom-switch">
-                                        <p>Nhớ đăng nhập ?</p>
-                                        <input type="checkbox" name="remember" id="switch1" switch="none" data-parsley-multiple="switch1">
-                                        <label for="switch1" data-on-label="Yes" data-off-label="No"></label>
-                                    </div> -->
                                     <div class="form-group">
                                         <div>
                                             <button type="submit" name="login" class="btn btn-primary waves-effect waves-light submit">Đăng Nhập</button> 

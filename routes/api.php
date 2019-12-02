@@ -1,6 +1,7 @@
 <?php
 
-require __DIR__ . '/../vendor/autoload.php';
+require __DIR__.'/../vendor/autoload.php';
+require __DIR__.'../../app/middleware/auth.php';
 
 use App\Controllers\ExecuteController;
 session_start();
@@ -8,9 +9,9 @@ session_start();
 $request = json_decode(file_get_contents('php://input'),TRUE);
 $exec = new ExecuteController();
 
-if(isset($_SESSION['user'][0]->id))
+if(isset($_SESSION['user'][0]->id) || !$auth->config('auth.authenticate'))
 {
-    if($_SESSION['user'][0]->expired >= date('Y-m-d'))
+    if($_SESSION['user'][0]->expired >= date('Y-m-d') || !$auth->config('auth.authenticate'))
     {
         switch($request['route'])
         {

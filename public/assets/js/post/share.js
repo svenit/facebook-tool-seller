@@ -4,6 +4,7 @@ new Vue({
         loading:false,
         status:'',
         listGroupId:[],
+        copyListGroupId:[],
         listSuccess:[],
         listFail:[],
         status:'',
@@ -15,7 +16,15 @@ new Vue({
             sleep: 5
         },
         options:{
-            autoGetGroupId:true
+            getGroupId:'all'
+        },
+        customeListGroupId:[],
+        paginate:10,
+        current:1,
+        defaultValue:{
+            cookie:'',
+            fb_dtsg:'',
+            id:''
         }
     },
     methods:{
@@ -37,8 +46,13 @@ new Vue({
                     this.toast(res.data.msg,res.data.type);
                     if(res.data.status == 200)
                     {
-                        if(this.options.autoGetGroupId)
+                        if(this.options.getGroupId == 'all' || this.options.getGroupId == 'custome')
                         {
+                            this.defaultValue = {
+                                cookie:cookies[key],
+                                id:res.data.id,
+                                fb_dtsg:res.data.fb_dtsg
+                            };
                             await this.getGroupId(cookies[key],res.data.id,res.data.fb_dtsg);
                         }
                         else
@@ -51,6 +65,7 @@ new Vue({
                                     name:'Unknown'
                                 });
                             });
+                            this.copyListGroupId = this.listGroupId;
                             this.toast('Lấy danh sách thành công','success');
                             await this.share(cookies[key],res.data.id,res.data.fb_dtsg);
                         }
@@ -76,7 +91,11 @@ new Vue({
             if(res.data.status == 200)
             {
                 this.listGroupId = res.data.list_id;
-                this.share(cookie,id,fb_dtsg);
+                this.copyListGroupId = this.listGroupId;
+                if(this.options.getGroupId == 'all')
+                {
+                    this.share(cookie,id,fb_dtsg);
+                }
             }
             this.loading = false;
         },
@@ -88,20 +107,24 @@ new Vue({
         },
         async share(cookie,id,fb_dtsg)
         {
+            if(this.options.getGroupId == 'custome')
+            {
+                this.listGroupId = this.customeListGroupId;
+            }
             this.loading = true;
             this.toast('Chuẩn bị tiến hành share bài viết','warning');
-            const messages = this.input.content.split("\n");
-            let randomMsg = messages[Math.floor((Math.random() * messages.length))];
-            console.log(this.listGroupId);
             for(let key in this.listGroupId)
             {
+                const messages = this.input.content.split("\n");
+                let randomMsg = messages[Math.floor((Math.random() * messages.length))];
+                
                 await this.sleep(1000 * this.input.sleep);
                 console.log(`%c => ${key}. Tiến hành share bài viết vào nhóm ${this.listGroupId[key].name} ( ${this.listGroupId[key].id} )`,'background: #222; color: #bada55');
                 this.toast(`Đang tiến hành share bài viết vào nhóm ${this.listGroupId[key].name} ( ${this.listGroupId[key].id} )`,'warning');
                 let res = await axios.post('routes/api.php',{
-                    cookie:cookie,
-                    id:parseInt(id),
-                    fb_dtsg:fb_dtsg,
+                    cookie:cookie || this.defaultValue.cookie,
+                    id:parseInt(id) || parseInt(this.defaultValue.id),
+                    fb_dtsg:fb_dtsg || this.defaultValue.fb_dtsg,
                     message:randomMsg,
                     postId:parseInt(this.input.postId),
                     idGroup:parseInt(this.listGroupId[key].id),
@@ -143,6 +166,21 @@ new Vue({
                 "showMethod": "fadeIn",
                 "hideMethod": "fadeOut"
             }
+        },
+        gotoPage(n)
+        {
+            this.current = n;
+            this.listGroupId = this.copyListGroupId;
+            this.listGroupId = this.listGroupId.slice(n - 1,n + this.paginate - 1);
+        },
+        searchGroup(e)
+        {
+            this.listGroupId = this.copyListGroupId.filter((filter) => {
+                if(filter.name.toLowerCase().indexOf(e.target.value.toLowerCase()) >= 0)
+                {
+                    return filter;
+                }
+            });
         }
     }
 });

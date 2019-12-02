@@ -33,6 +33,7 @@
                                     <label>ID Bài Viết</label>
                                     <div><input data-parsley-type="number" v-model='input.postId' type="text" class="form-control post-id" required="" placeholder=""></div>
                                 </div>
+                                
                                 <div class="form-group">
                                     <label>Nội dung bài viết ( Cách nhau 1 dòng )</label>
                                     <div><textarea  v-model='input.content' class="form-control page-avoid-id" rows="5"></textarea></div>

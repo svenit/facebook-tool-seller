@@ -2,17 +2,19 @@
 
     namespace App\Helper;
 
-    trait Server
+    class Server
     {
-        public function config($name)
+        public function config($name,$set = false)
         {
-            require '../../config/database.php';
-
+            if(empty($set))
+            {
+                require __DIR__."../../../config/".explode('.',$name)[0].".php";   
+            }
             if(is_array($name))
             {
                 foreach($name as $key => $arr)
                 {
-                    return $this->config($arr);
+                    return $this->config($arr,true);
                 }
             }
             else
@@ -24,7 +26,7 @@
                     {
                         $first = $conf[0];
                         array_shift($conf);
-                        return $this->config($config[$first][$conf[0]]);
+                        return $this->config($config[$first][$conf[0]],true);
                     }
                     else
                     {

@@ -19,7 +19,7 @@
         <div class="wrapper">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-lg-6">
+                    <div class="col-lg-8">
                         <div class="card m-b-20">
                             <div class="card-body">
                                 <h4 class="mt-0 header-title">Chia Sẻ Bài Viết Lên Nhóm</h4>
@@ -37,13 +37,59 @@
                                     <label>Nội dung bài viết ( Cách nhau 1 dòng )</label>
                                     <div><textarea  v-model='input.content' class="form-control page-avoid-id" rows="5"></textarea></div>
                                 </div>
-                                <div style="margin-left:-20px" class="custom-control custom-switch">
-                                    <p>{{ options.autoGetGroupId ? 'Tự động lấy Group ID' : 'Tùy chỉnh Group ID' }}</p>
-                                    <div class="clearfix"></div>
-                                    <input v-model="options.autoGetGroupId" type="checkbox" id="switch1" switch="none" data-parsley-multiple="switch1">
-                                    <label for="switch1" data-on-label="Yes" data-off-label="No"></label>
+                                <div class="form-group">
+                                    <label>Nhóm</label>
+                                    <input type="radio" @click="listGroupId = copyListGroupId = []" v-model="options.getGroupId" value="all" style="margin:5px;"> Tất cả
+                                    <input type="radio" v-model="options.getGroupId" value="custome" style="margin:5px;"> Tùy chọn
+                                    <input type="radio" @click="listGroupId = copyListGroupId = []" v-model="options.getGroupId" value="list" style="margin:5px;"> Danh sách ID
                                 </div>
-                                <div v-if="!options.autoGetGroupId" class="form-group">
+                                <div v-if="options.getGroupId == 'custome' && listGroupId.length > 0 || copyListGroupId.length > 0">
+                                    <table class="table table-bordered">
+                                        <p class="alert alert-info">{{ customeListGroupId.length }} nhóm đã được chọn</p>
+                                        <div class="row">
+                                            <div class="col-10 input-group mb-3">
+                                                <input @keyup="searchGroup" type="text" class="form-control" placeholder="Tìm kiếm" aria-label="Username" aria-describedby="basic-addon1">
+                                            </div>
+                                            <div class="col-2 input-group mb-3">
+                                                <div class="dropdown">
+                                                    <a class="btn btn-default dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        <span>Trang {{ paginate }}</span>
+                                                    </a>
+                                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                                        <a class="dropdown-item" @click="paginate = 10">10</a>
+                                                        <a class="dropdown-item" @click="paginate = 25">25</a>
+                                                        <a class="dropdown-item" @click="paginate = 25">50</a>
+                                                        <a class="dropdown-item" @click="paginate = 25">100</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center" scope="col">STT</th>
+                                                <th class="text-center" scope="col">Tên Nhóm</th>
+                                                <th class="text-center" scope="col">ID</th>
+                                                <th class="text-center" scope="col">Chọn</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr v-for="(group,index) in listGroupId" :key="index" v-if="index <= paginate">
+                                                <th class="text-center" scope="row">{{ ((current * paginate) + index + 1) - paginate  }}</th>
+                                                <td class="text-center">{{ group.name }}</td>
+                                                <td class="text-center">{{ group.id }}</td>
+                                                <td class="text-center"><input v-model="customeListGroupId" :value="{id:group.id,name:group.name}" type="checkbox"></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <nav aria-label="Page navigation example">
+                                        <ul class="pagination">
+                                            <li class="page-item" :class="[current == 1 ? 'disabled' : '']"><a class="page-link" @click="gotoPage(current - 1)">Previous</a></li>
+                                            <li v-for="n in Math.round(copyListGroupId.length/paginate)" :key="n" class="page-item" :class="[n == current ? 'active' : '']"><a class="page-link" @click="gotoPage(n)">{{ n }}</a></li>
+                                            <li class="page-item" :class="[current == Math.round(copyListGroupId.length/paginate) ? 'disabled' : '']"><a class="page-link" @click="gotoPage(current + 1)">Next</a></li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                                <div v-if="options.getGroupId == 'list'" class="form-group">
                                     <label>Danh sách ID nhóm ( Cách nhau 1 dòng )</label>
                                     <div><textarea v-model='input.groupId' class="form-control page-avoid-id" rows="5"></textarea></div>
                                 </div>
@@ -53,8 +99,8 @@
                                 </div>
                                 <div class="form-group">
                                     <div>
-                                        <button type="submit" @click='request()' class="btn btn-primary waves-effect waves-light submit">Tiến Hành</button> 
-                                        <button type="reset" class="btn btn-secondary waves-effect m-l-5">Hủy</button>
+                                        <button type="submit" v-if="options.getGroupId == 'custome' && listGroupId.length > 0 || copyListGroupId.length > 0" @click='share()' class="btn btn-primary waves-effect waves-light submit">Bắt Đầu ( {{ customeListGroupId.length }} )</button> 
+                                        <button type="submit" v-else @click='request()' class="btn btn-primary waves-effect waves-light submit">{{ options.getGroupId == 'custome' && listGroupId.length == 0 && copyListGroupId.length == 0 ? 'Lấy Danh Sách ID Nhóm' : 'Bắt Đầu' }}</button> 
                                     </div>
                                 </div>
                                 </form>
@@ -62,7 +108,7 @@
                         </div>
                     </div>
                     <!-- end col -->
-                    <div class="col-lg-6">
+                    <div class="col-lg-4">
                         <div class="card m-b-20">
                             <div class="card-body">
                                 <h4 class="mt-0 header-title">Thống Kê</h4>

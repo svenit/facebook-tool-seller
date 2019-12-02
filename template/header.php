@@ -1,5 +1,6 @@
 <?php
     session_start();
+    require __DIR__.'../../app/middleware/auth.php';
 ?>
 <header id="topnav">
     <div class="topbar-main">
@@ -18,38 +19,40 @@
                                 <button type="submit"><i class="fas fa-search"></i></button></div>
                         </form>
                     </li>
-                    <li class="dropdown notification-list">
-                        <?php
-                            if(isset($_SESSION['user']))
-                            { 
-                                ?>
-                                    <div class="dropdown notification-list nav-pro-img xss">
-                                        <a class="dropdown-toggle nav-link arrow-none nav-user" data-toggle="dropdown" href="#"
-                                            role="button" aria-haspopup="false" aria-expanded="false"><img
-                                                src="<?php echo isset($_SESSION['user']) ? "https://ui-avatars.com/api/?background=cef2ef&length=1&color=26998d&name=".$_SESSION['user'][0]->name : 'https://image.flaticon.com/icons/svg/149/149071.svg' ?>" alt="user"
-                                                class="rounded-circle"></a>
-                                        <div class="dropdown-menu dropdown-menu-right profile-dropdown">
-                                            <a class="dropdown-item d-block" href="#"><i
-                                                    class="mdi mdi-account-circle m-r-5"></i> <?php echo $_SESSION['user'][0]->name ?></a>
-                                            <a onclick="alert('ID : ' + <?php echo $_SESSION['user'][0]->id ?> + '\n' + 'Tên tài khoản : <?php echo $_SESSION['user'][0]->username ?>' + '\n' + 'Tên : <?php echo $_SESSION['user'][0]->name ?>' +  '\n' + 'Ngày hết hạn : <?php echo $_SESSION['user'][0]->expired ?>')" class="dropdown-item"><i
-                                                    class="mdi mdi-memory m-r-5"></i> Xem Thông Tin</a>
-                                            <a class="dropdown-item" href="https://facebook.com/sven307"><i class="mdi mdi-wallet m-r-5"></i> Liên
-                                                hệ</a>
-                                            <a class="dropdown-item" href="logout"><i class="mdi mdi-logout m-r-5"></i> Đăng Xuất</a>
+                    <?php if($auth->config('auth.authenticate')):?>
+                        <li class="dropdown notification-list">
+                            <?php
+                                if(isset($_SESSION['user']))
+                                { 
+                                    ?>
+                                        <div class="dropdown notification-list nav-pro-img xss">
+                                            <a class="dropdown-toggle nav-link arrow-none nav-user" data-toggle="dropdown" href="#"
+                                                role="button" aria-haspopup="false" aria-expanded="false"><img
+                                                    src="<?php echo "https://ui-avatars.com/api/?background=cef2ef&length=1&color=26998d&name=".$_SESSION['user'][0]->name ?>" alt="user"
+                                                    class="rounded-circle"></a>
+                                            <div class="dropdown-menu dropdown-menu-right profile-dropdown">
+                                                <a class="dropdown-item d-block" href="#"><i
+                                                        class="mdi mdi-account-circle m-r-5"></i> <?php echo $_SESSION['user'][0]->name ?></a>
+                                                <a onclick="alert('ID : ' + <?php echo $_SESSION['user'][0]->id ?> + '\n' + 'Tên tài khoản : <?php echo $_SESSION['user'][0]->username ?>' + '\n' + 'Tên : <?php echo $_SESSION['user'][0]->name ?>' +  '\n' + 'Ngày hết hạn : <?php echo $_SESSION['user'][0]->expired ?>')" class="dropdown-item"><i
+                                                        class="mdi mdi-memory m-r-5"></i> Xem Thông Tin</a>
+                                                <a class="dropdown-item" href="https://facebook.com/sven307"><i class="mdi mdi-wallet m-r-5"></i> Liên
+                                                    hệ</a>
+                                                <a class="dropdown-item" href="logout"><i class="mdi mdi-logout m-r-5"></i> Đăng Xuất</a>
+                                            </div>
                                         </div>
-                                    </div>
-                                <?php
-                            }
-                            else
-                            {
-                                ?>
-                                    <div class="dropdown notification-list nav-pro-img">
-                                        <a style="position:relative;background-color: #f8f9fa;top: 20px;padding: 9px;border: 1px solid #eee;border-radius: 25px;" href="login">Đăng Nhập <i class="mdi mdi-login"></i></a>
-                                    </div>
-                                <?php
-                            }
-                        ?>
-                    </li>
+                                    <?php
+                                }
+                                else
+                                {
+                                    ?>
+                                        <div class="dropdown notification-list nav-pro-img">
+                                            <a style="position:relative;background-color: #f8f9fa;top: 20px;padding: 9px;border: 1px solid #eee;border-radius: 25px;" href="login">Đăng Nhập <i class="mdi mdi-login"></i></a>
+                                        </div>
+                                    <?php
+                                }
+                            ?>
+                        </li>
+                    <?php endif; ?>
                     <li class="menu-item">
                         <!-- Mobile menu toggle-->
                         <a class="navbar-toggle nav-link" id="mobileToggle">

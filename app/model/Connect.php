@@ -4,9 +4,8 @@
     use App\Helper\Server;
     use PDO;
 
-    class Connect
+    class Connect extends Server
     {   
-        use Server;
         protected $connect;
 
         public function __construct()
