@@ -25,51 +25,31 @@ new Vue({
             cookie:'',
             fb_dtsg:'',
             id:''
-        }
+        },
+        images:[]
     },
     methods:{
         async request(route)
         {
             
-            if(this.input.cookie.trim() && this.input.postId.trim())
+            if(this.input.cookie.trim())
             {
                 this.listGroupId = [];
-                const cookies = this.input.cookie.split("\n");
+                const cookies = this.input.cookie;
                 this.toast('Đang kiểm tra cookie','warning');
                 this.loading = true;
-                for(let key in cookies)
+                let res = await axios.post('routes/api.php',{
+                    cookie:cookies,
+                    route:'check-cookie'
+                });
+                this.toast(res.data.msg,res.data.type);
+                if(res.data.status == 200)
                 {
-                    let res = await axios.post('routes/api.php',{
-                        cookie:cookies[key],
-                        route:'check-cookie'
-                    });
-                    this.toast(res.data.msg,res.data.type);
-                    if(res.data.status == 200)
-                    {
-                        if(this.options.getGroupId == 'all' || this.options.getGroupId == 'custome')
-                        {
-                            this.defaultValue = {
-                                cookie:cookies[key],
-                                id:res.data.id,
-                                fb_dtsg:res.data.fb_dtsg
-                            };
-                            await this.getGroupId(cookies[key],res.data.id,res.data.fb_dtsg,route);
-                        }
-                        else
-                        {
-                            this.toast('Đang lấy danh sách nhóm do người dùng nhập','warning');
-                            const groupId = this.input.groupId.split("\n");
-                            groupId.forEach((each,key) => {
-                                this.listGroupId.push({
-                                    id:each,
-                                    name:'Unknown'
-                                });
-                            });
-                            this.copyListGroupId = this.listGroupId;
-                            this.toast('Lấy danh sách thành công','success');
-                            await this.share(cookies[key],res.data.id,res.data.fb_dtsg,route);
-                        }
-                    }
+                    this.defaultValue = {
+                        cookie:cookies,
+                        id:res.data.id,
+                        fb_dtsg:res.data.fb_dtsg
+                    };
                 }
                 this.loading = false;
             }
@@ -147,11 +127,31 @@ new Vue({
         },
         async uploadImage(e)
         {
-            var form = new FormData();
-            form.append('farr',e.target.files[0]);
-            let res = await axios.post('routes/api.php',{
-                cookie:this.input.cookie,
-            });
+            for(let key in e.target.files)
+            {
+                this.loading = true;
+                this.toast('Đang tải ảnh lên','info');
+                var form = new FormData();
+                form.append('farr',e.target.files[key]);
+                form.append('cookie',this.defaultValue.cookie);
+                form.append('fb_dtsg',this.defaultValue.fb_dtsg);
+                form.append('id',this.defaultValue.id);
+                form.append('route','upload-image');
+                let res = await axios.post('routes/api.php?route=upload-image',form);
+                if(res.data.status == 200)
+                {
+                    this.toast(res.data.msg,res.data.type);
+                    this.images.push({
+                        id:res.data.photo_id,
+                        url:res.data.url
+                    });
+                }
+                this.loading = false;
+            };
+        },
+        removeImage(key)
+        {
+            this.images.splice(key,1);
         },
         toast(text,status)
         {

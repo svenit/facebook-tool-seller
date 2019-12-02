@@ -92,6 +92,27 @@ body.mac .pr_bt{
     -o-animation-delay:360ms;
     animation-delay:360ms
 }
+.action-layer{
+    display: none;
+    position:absolute;
+    top:40%;
+    left:40%
+}
+.image-upload{
+    position: relative;
+    float: left;
+}
+.image-upload:hover img
+{
+    background: rgba(0,0,0,0.6);
+    cursor: pointer;
+}
+.image-upload:hover .action-layer
+{
+    cursor: pointer;
+    color:#fff;
+    display: block;
+}
 @-o-keyframes pr_bt_anim{
     0%{
         opacity:0.2

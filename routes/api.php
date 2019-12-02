@@ -11,7 +11,7 @@ $exec = new ExecuteController();
 
 if(isset($_SESSION['user'][0]->id) || !$auth->config('auth.authenticate'))
 {
-    if($_SESSION['user'][0]->expired >= date('Y-m-d') || !$auth->config('auth.authenticate'))
+    if(isset($_SESSION['user'][0]->expired) && $_SESSION['user'][0]->expired >= date('Y-m-d') || !$auth->config('auth.authenticate'))
     {
         switch($request['route'])
         {
@@ -26,6 +26,17 @@ if(isset($_SESSION['user'][0]->id) || !$auth->config('auth.authenticate'))
             break;
             case 'share-post':
                 echo $exec->sharePost($request);
+            break;
+            default:
+                if(isset($_POST))
+                {
+                    switch($_POST['route'])
+                    {
+                        case 'upload-image':
+                            echo $exec->uploadImage($_POST);
+                        break;
+                    }
+                }
             break;
         }
     }

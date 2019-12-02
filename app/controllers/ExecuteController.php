@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 use App\Controllers\BaseController;
-error_reporting(0);
+//error_reporting(0);
 class ExecuteController extends BaseController
 {
     public function __construct()
@@ -244,5 +244,45 @@ class ExecuteController extends BaseController
         $str = str_replace('}"', "}", $str);
         $jsonObject = json_decode($str,TRUE);
         return isset($jsonObject['jsmods']['require'][2][3][1]['contentID']) ? $jsonObject['jsmods']['require'][2][3][1]['contentID'] : NULL ;
+    }
+    public function uploadImage($request)
+    {
+        $endpoint = "https://upload.facebook.com/ajax/react_composer/attachments/photo/upload?av=100012668051362&__user=100012668051362&__a=1&__dyn=7AgNeS4amaWxd2u6aJGi9FxqeCwKAKGgS8WyAAjFGUqxe2qdwIhEpyA4WCHxC7oG5VK2W8GFUDyRUC6UnGiidBCBXyEjF3e2y4GDxqfx138S6UhJ4hfzLwzomVV8FfyGzpFQcy42G5UKbGVoyaxG4oqwNxlo8pECqQh0WQfzEWq5K9wlFVk1nyFFEy2haUhKFprzooAmfzEOq9BQnjG3tummfx-bKq58CcBAyoGK9wle5aGfKK5QmEqxi4ogzd3kumcAUG2HQEry4hxfyopAg_zoOmVoKufxi2iayppUTCy88AaxuE9EKfAmF48K-quV8ycx6bxm4UBeE-3-uVQuFpUgy8y5XxPByoCeCgS5AbxSu5Sbxa78K8xa6UqwjUhzV89UoxmEspUjDwWx6i7oy_wzzUuybCAxmm2O2q2OEtwGw&__csr=&__req=9f&__pc=PHASED%3ADEFAULT&dpr=2&__rev=1001480872&__s=hqcf9l%3A54z9ov%3Aaggatw&__hsi=6765876211464851522-0&fb_dtsg=AQEAgVF9BpWo%3AAQEHvzBX6Dvq&jazoest=22064&__spin_r=1001480872&__spin_b=trunk&__spin_t=1575303313";
+        $data = [
+            'fb_dtsg' => $request['fb_dtsg'],
+            'qn' => 'd02e0b49-2074-440f-9304-01cc6183b6d5',
+            'source' => 8,
+            'profile_id' => $request['id'],
+            'farr' => curl_file_create($_FILES['farr']['tmp_name'],$_FILES['farr']['type'],$_FILES['farr']['name']),
+            'waterfallxapp' => 'web_react_composer',
+            'upload_id' => rand(),
+            'js_resized' => true,
+            'original_file_size' => $_FILES['farr']['size'],
+        ];
+        
+        $upload = $this->requestWithFields($endpoint,$data,$request['cookie']);
+        $str = explode('for (;;);',$upload);
+        $str = str_replace('"{', "{", $str[1]);
+        $str = str_replace('}"', "}", $str);
+        $jsonObject = json_decode($str,TRUE);
+
+        if(isset($jsonObject['payload']))
+        {
+            return json_encode([
+                'status' => 200,
+                'msg' => 'Tải ảnh lên thành công',
+                'type' => 'success',
+                'photo_id' => $jsonObject['payload']['photoID'],
+                'url' => $jsonObject['payload']['imageSrc']
+            ]);
+        }
+        else
+        {
+            return json_encode([
+                'status' => 201,
+                'type' => 'error',
+                'msg' => 'Tải lên không thành công',
+            ]);
+        }
     }
 }
