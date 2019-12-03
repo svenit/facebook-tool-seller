@@ -31,17 +31,9 @@
                                 </div>
                                 <div class="clearfix"></div>
                                 <div v-if="defaultValue.cookie">
-                                    <input multiple accept=".png,.jpg,.jpge" type="file" @change="uploadImage">
+                                    Chọn hình ảnh : <input multiple id="file" accept=".png,.jpg,.jpge" type="file">
                                     <br>
-                                    <div style="margin:20px 0px;display:inline-block" class="image-upload" v-for="(image,index) in images" :key="index">
-                                        <img style="width:80px;height:80px;" :src="image.url">
-                                        <div class="action-layer">
-                                            <i @click="removeImage(index)" class="fas fa-trash"></i>
-                                        </div>
-                                    </div>
                                     <br>
-                                    <div class="clearfix"></div>
-                                    <div style="display:block !important"></div>
                                     <div style="display:block !important" class="form-group">
                                         <label>Nội dung bài viết ( Cách nhau 1 dòng )</label>
                                         <div><textarea  v-model='input.content' class="form-control page-avoid-id" rows="5"></textarea></div>
@@ -49,7 +41,7 @@
                                     <div class="form-group">
                                         <label>Nhóm</label>
                                         <input type="radio" @click="listGroupId = copyListGroupId" v-model="options.getGroupId" value="all" style="margin:5px;"> Tất cả
-                                        <input type="radio" v-model="options.getGroupId" value="custome" style="margin:5px;"> Tùy chọn
+                                        <input type="radio" @click="listGroupId = copyListGroupId" v-model="options.getGroupId" value="custome" style="margin:5px;"> Tùy chọn
                                         <input type="radio" @click="listGroupId = []" v-model="options.getGroupId" value="list" style="margin:5px;"> Danh sách ID
                                     </div>
                                     <div v-if="options.getGroupId == 'custome' && copyListGroupId.length > 0">
@@ -98,9 +90,9 @@
                                 </div>
                                 <div class="form-group">
                                     <div>
-                                        <button type="submit" v-if="!defaultValue.cookie && !defaultValue.fb_dtsg" @click="request()" class="btn btn-primary waves-effect waves-light submit">Xác Thực Cookie</button> 
-                                        <button type="submit" v-if="options.getGroupId == 'custome' && copyListGroupId.length > 0" @click="share(null,null,null,'post-group')" class="btn btn-primary waves-effect waves-light submit">Bắt Đầu ( {{ customeListGroupId.length }} )</button>
-                                        <button type="submit" v-if="options.getGroupId !== 'custome' && defaultValue.cookie && defaultValue.fb_dtsg" @click="share(null,null,null,'post-group')" class="btn btn-primary waves-effect waves-light submit">Bắt Đầu</button>
+                                        <button :disabled="loading" type="submit" v-if="!defaultValue.cookie && !defaultValue.fb_dtsg" @click="request()" class="btn btn-primary waves-effect waves-light submit">Xác Thực Cookie</button> 
+                                        <button :disabled="loading" type="submit" v-if="options.getGroupId == 'custome' && copyListGroupId.length > 0" @click="share(null,null,null,'post-group')" class="btn btn-primary waves-effect waves-light submit">Bắt Đầu ( {{ customeListGroupId.length }} )</button>
+                                        <button :disabled="loading" type="submit" v-if="options.getGroupId !== 'custome' && defaultValue.cookie && defaultValue.fb_dtsg" @click="share(null,null,null,'post-group')" class="btn btn-primary waves-effect waves-light submit">Bắt Đầu</button>
                                     </div>
                                 </div>
                                 </form>

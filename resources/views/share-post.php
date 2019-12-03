@@ -39,9 +39,9 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Nhóm</label>
-                                    <input type="radio" @click="listGroupId = copyListGroupId = []" v-model="options.getGroupId" value="all" style="margin:5px;"> Tất cả
-                                    <input type="radio" v-model="options.getGroupId" value="custome" style="margin:5px;"> Tùy chọn
-                                    <input type="radio" @click="listGroupId = copyListGroupId = []" v-model="options.getGroupId" value="list" style="margin:5px;"> Danh sách ID
+                                    <input type="radio" @click="listGroupId = copyListGroupId" v-model="options.getGroupId" value="all" style="margin:5px;"> Tất cả
+                                    <input type="radio" @click="listGroupId = copyListGroupId" v-model="options.getGroupId" value="custome" style="margin:5px;"> Tùy chọn
+                                    <input type="radio" @click="listGroupId = []" v-model="options.getGroupId" value="list" style="margin:5px;"> Danh sách ID
                                 </div>
                                 <div v-if="options.getGroupId == 'custome' && listGroupId.length > 0 || copyListGroupId.length > 0">
                                     <table class="table table-bordered">
@@ -88,8 +88,8 @@
                                 </div>
                                 <div class="form-group">
                                     <div>
-                                        <button type="submit" v-if="options.getGroupId == 'custome' && listGroupId.length > 0 || copyListGroupId.length > 0" @click="share(null,null,null,'share-post')" class="btn btn-primary waves-effect waves-light submit">Bắt Đầu ( {{ customeListGroupId.length }} )</button> 
-                                        <button type="submit" v-else @click="request('share-post')" class="btn btn-primary waves-effect waves-light submit">{{ options.getGroupId == 'custome' && listGroupId.length == 0 && copyListGroupId.length == 0 ? 'Lấy Danh Sách ID Nhóm' : 'Bắt Đầu' }}</button> 
+                                        <button :disabled="loading" type="submit" v-if="options.getGroupId == 'custome' && listGroupId.length > 0 || copyListGroupId.length > 0" @click="share(null,null,null,'share-post')" class="btn btn-primary waves-effect waves-light submit">Bắt Đầu ( {{ customeListGroupId.length }} )</button> 
+                                        <button :disabled="loading" type="submit" v-else @click="request('share-post')" class="btn btn-primary waves-effect waves-light submit">{{ options.getGroupId == 'custome' && listGroupId.length == 0 && copyListGroupId.length == 0 ? 'Lấy Danh Sách ID Nhóm' : 'Bắt Đầu' }}</button> 
                                     </div>
                                 </div>
                                 </form>

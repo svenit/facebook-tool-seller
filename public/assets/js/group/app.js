@@ -72,8 +72,7 @@ new Vue({
             this.toast(res.data.msg,res.data.type);
             if(res.data.status == 200)
             {
-                this.listGroupId = res.data.list_id;
-                this.copyListGroupId = this.listGroupId;
+                this.listGroupId = this.copyListGroupId = res.data.list_id;
             }
             this.loading = false;
         },
@@ -91,52 +90,72 @@ new Vue({
             }
             else if(this.options.getGroupId == 'list')
             {
-                this.listGroupId = this.input.groupId.split("\n");
+                this.input.groupId.split("\n").forEach((each) => {
+                    this.copyListGroupId.forEach((copy) => {
+                        if(each == copy.id)
+                        {
+                            this.listGroupId.push({
+                                name:each,
+                                id:each,
+                                published:false
+                            });
+                        }
+                    });
+                });
             }
             this.loading = true;
             this.toast('Chuẩn bị tiến hành đăng bài viết','warning');
-            for(let key in this.listGroupId)
+            if(this.listGroupId.length > 0)
             {
-                const messages = this.input.content.split("\n");
-                let randomMsg = messages[Math.floor((Math.random() * messages.length))];
-                await this.sleep(1000 * this.input.sleep);
-                console.log(`%c => ${key}. Tiến hành đăng bài viết vào nhóm ${this.listGroupId[key].name} ( ${this.listGroupId[key].id} )`,'background: #222; color: #bada55');
-                this.toast(`Đang tiến hành đăng bài viết vào nhóm ${this.listGroupId[key].name} ( ${this.listGroupId[key].id} )`,'warning');
-                let res = await axios.post('routes/api.php',{
-                    cookie:cookie || this.defaultValue.cookie,
-                    id:parseInt(id) || parseInt(this.defaultValue.id),
-                    fb_dtsg:fb_dtsg || this.defaultValue.fb_dtsg,
-                    message:randomMsg,
-                    money:parseInt(this.input.money),
-                    idGroup:parseInt(this.listGroupId[key].id),
-                    groupName:this.listGroupId[key].name,
-                    attach:this.images,
-                    route:route
-                });
-                this.toast(res.data.msg,res.data.type);
-                if(res.data.status == 200)
+                for(let key in this.listGroupId)
                 {
-                    this.listSuccess.push(res.data);
-                    this.listGroupId[key].published = true;
-                    $('.data-list').animate({scrollTop: document.body.scrollHeight},'fast');
+                    await this.uploadImage(document.getElementById('file'));
+                    const messages = this.input.content.split("\n");
+                    let randomMsg = messages[Math.floor((Math.random() * messages.length))];
+                    await this.sleep(1000 * this.input.sleep);
+                    console.log(`%c => ${key}. Tiến hành đăng bài viết vào nhóm ${this.listGroupId[key].name} ( ${this.listGroupId[key].id} )`,'background: #222; color: #bada55');
+                    this.toast(`Đang tiến hành đăng bài viết vào nhóm ${this.listGroupId[key].name} ( ${this.listGroupId[key].id} )`,'warning');
+                    let res = await axios.post('routes/api.php',{
+                        cookie:cookie || this.defaultValue.cookie,
+                        id:parseInt(id) || parseInt(this.defaultValue.id),
+                        fb_dtsg:fb_dtsg || this.defaultValue.fb_dtsg,
+                        message:randomMsg,
+                        money:parseInt(this.input.money),
+                        idGroup:parseInt(this.listGroupId[key].id),
+                        groupName:this.listGroupId[key].name,
+                        attach:this.images,
+                        route:route
+                    });
+                    this.toast(res.data.msg,res.data.type);
+                    if(res.data.status == 200)
+                    {
+                        this.listSuccess.push(res.data);
+                        this.listGroupId[key].published = true;
+                        $('.data-list').animate({scrollTop: document.body.scrollHeight},'fast');
+                    }
+                    else
+                    {
+                        this.listFail.push(res.data);
+                        $('.data-list').animate({scrollTop: document.body.scrollHeight},'fast');
+                    }
+                    this.images = [];
                 }
-                else
-                {
-                    this.listFail.push(res.data);
-                    $('.data-list').animate({scrollTop: document.body.scrollHeight},'fast');
-                }
+            }
+            else
+            {
+                this.toast('Không tìm thấy nhóm nào','error');
             }
             this.loading = false;
         },
         async uploadImage(e)
         {
-            for(var i = 0; i < e.target.files.length;i++)
+            for(var i = 0; i < e.files.length;i++)
             {
-                console.log(e.target.files);
+                console.log(e.files);
                 this.loading = true;
                 this.toast('Đang tải ảnh lên','info');
                 var form = new FormData();
-                form.append('farr',e.target.files[i]);
+                form.append('farr',e.files[i]);
                 form.append('cookie',this.defaultValue.cookie);
                 form.append('fb_dtsg',this.defaultValue.fb_dtsg);
                 form.append('id',this.defaultValue.id);

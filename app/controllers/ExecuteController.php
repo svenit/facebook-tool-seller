@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 use App\Controllers\BaseController;
-//error_reporting(0);
+error_reporting(0);
 class ExecuteController extends BaseController
 {
     public function __construct()
@@ -82,7 +82,7 @@ class ExecuteController extends BaseController
         if(count($response) > 0)
         {
             return json_encode([
-                'msg' => 'Đã tìm thấy danh sách nhóm',
+                'msg' => 'Đã tìm thấy '.count($response).' nhóm',
                 'list_id' => $response,
                 'type' => 'success',
                 'status' => 200
@@ -241,18 +241,21 @@ class ExecuteController extends BaseController
                     'group_name' => $request['groupName'], 
                     'status' => 201,
                     'type' => 'error',
-                    'msg' => 'Lỗi xác thực Facebook, xin vui lòng nhập cookie mới',
+                    'msg' => 'Lỗi xác thực cookie Facebook, xin vui lòng nhập cookie mới',
                     'group_id' => $request['idGroup']
                 ];
             }
             else
             {
+                $pendingMode = $this->checkPendingMode($data['payload']['story_fbid'],$request);
+                $msg = isset($pendingMode) && $pendingMode['status'] == 1 ? 'Đăng bài viết thành công [ Chờ duyệt ]' : 'Đăng bài viết thành công';
+
                 $response = [
                     'post_id' => $data['payload']['story_fbid'],
                     'group_name' => $request['groupName'], 
                     'status' => 200,
                     'type' => 'success',
-                    'msg' => 'Đăng bài viết lên nhóm thành công',
+                    'msg' => $msg,
                     'group_id' => $request['idGroup']
                 ];
             }

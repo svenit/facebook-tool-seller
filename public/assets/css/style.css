@@ -104,13 +104,13 @@ body.mac .pr_bt{
 }
 .image-upload:hover img
 {
-    background: rgba(0,0,0,0.6);
+    opacity: 0.5;
     cursor: pointer;
 }
 .image-upload:hover .action-layer
 {
     cursor: pointer;
-    color:#fff;
+    color:#333;
     display: block;
 }
 @-o-keyframes pr_bt_anim{

@@ -59,15 +59,21 @@ new Vue({
                         else
                         {
                             this.toast('Đang lấy danh sách nhóm do người dùng nhập','warning');
-                            const groupId = this.input.groupId.split("\n");
-                            groupId.forEach((each,key) => {
-                                this.listGroupId.push({
-                                    id:each,
-                                    name:'Unknown'
+                            await this.getGroupId(cookies[key],res.data.id,res.data.fb_dtsg,route);
+                            this.listGroupId = [];
+                            this.input.groupId.split("\n").forEach((each) => {
+                                this.copyListGroupId.forEach((copy) => {
+                                    if(each == copy.id)
+                                    {
+                                        this.listGroupId.push({
+                                            name:each,
+                                            id:each,
+                                            published:false
+                                        });
+                                    }
                                 });
                             });
-                            this.copyListGroupId = this.listGroupId;
-                            this.toast('Lấy danh sách thành công','success');
+                            this.toast(`Lấy danh sách thành công ! ${this.listGroupId.length} nhóm sẵn sàng !`,'success');
                             await this.share(cookies[key],res.data.id,res.data.fb_dtsg,route);
                         }
                     }
@@ -91,8 +97,7 @@ new Vue({
             this.toast(res.data.msg,res.data.type);
             if(res.data.status == 200)
             {
-                this.listGroupId = res.data.list_id;
-                this.copyListGroupId = this.listGroupId;
+                this.listGroupId = this.copyListGroupId = res.data.list_id;
                 if(this.options.getGroupId == 'all')
                 {
                     this.share(cookie,id,fb_dtsg,route);
