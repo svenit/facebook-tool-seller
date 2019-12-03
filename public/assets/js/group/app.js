@@ -26,7 +26,8 @@ new Vue({
             fb_dtsg:'',
             id:''
         },
-        images:[]
+        images:[],
+        allSelected:false
     },
     methods:{
         async request()
@@ -50,6 +51,7 @@ new Vue({
                         id:res.data.id,
                         fb_dtsg:res.data.fb_dtsg
                     };
+                    this.getGroupId(cookies,res.data.id,res.data.fb_dtsg,'post-group')
                 }
                 this.loading = false;
             }
@@ -72,10 +74,6 @@ new Vue({
             {
                 this.listGroupId = res.data.list_id;
                 this.copyListGroupId = this.listGroupId;
-                if(this.options.getGroupId == 'all')
-                {
-                    this.share(cookie,id,fb_dtsg,route);
-                }
             }
             this.loading = false;
         },
@@ -90,6 +88,10 @@ new Vue({
             if(this.options.getGroupId == 'custome')
             {
                 this.listGroupId = this.customeListGroupId;
+            }
+            else if(this.options.getGroupId == 'list')
+            {
+                this.listGroupId = this.input.groupId.split("\n");
             }
             this.loading = true;
             this.toast('Chuẩn bị tiến hành đăng bài viết','warning');
@@ -150,6 +152,19 @@ new Vue({
                 }
                 this.loading = false;
             };
+        },
+        selectAll()
+        {
+            this.customeListGroupId = [];
+            if(!this.allSelected)
+            {
+                this.copyListGroupId.forEach((each) => {
+                    this.customeListGroupId.push({
+                        id:each.id,
+                        name:each.name
+                    });
+                });
+            }
         },
         removeImage(key)
         {

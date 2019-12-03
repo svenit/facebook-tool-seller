@@ -27,7 +27,7 @@ if(isset($_SESSION['user'][0]->id) || !$auth->config('auth.authenticate'))
             case 'share-post':
                 echo $exec->sharePost($request);
             break;
-            case 'post-market':
+            case 'post-group':
                 echo $exec->postToGroup($request);
             break;
             default:

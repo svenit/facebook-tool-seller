@@ -81,8 +81,6 @@
                         <a href="#"><i class="fas fa-comment-alt"></i>Bài Viết</a>
                         <ul class="submenu">
                             <li><a href="share-post?#">Chia Sẻ Lên Nhóm</a></li>
-                            <li><a href="#">Quét Bình Luận</a></li>
-                            <li><a href="#">Quét Gmail</a></li>
                         </ul>
                     </li>
                     <li class="has-submenu">
@@ -96,28 +94,16 @@
                         </ul>
                     </li>
                     <li class="has-submenu">
-                        <a href="#"><i class="fas fa-user"></i> Cá Nhân</a>
-                        <ul class="submenu">
-                            <li><a href="#">Lấy Token ( Không Checkpoint )</a></li>
-                            <li><a href="#">Lọc Bạn Bè</a></li>
-                            <li><a href="#">Đếm Tin Nhắn</a></li>
-                            <li><a href="#">Tin Nhắn Đầu Tiên</a></li>
-                            <li><a href="#">Auto Chia Sẻ</a></li>
-                        </ul>
-                    </li>
-                    <li class="has-submenu">
                         <a href="#"><i class="fas fa-users"></i> Nhóm</a>
                         <ul class="submenu">
-                            <li><a href="post-market?#">Đăng Bài Viết Bán Hàng</a></li>
-                            <li><a href="#">Quét Bài Viết</a></li>
-                            <li><a href="#">Auto Tham Gia Nhóm</a></li>
+                            <li><a href="post-market?#">Đăng Market Place</a></li>
+                            <li><a href="post-group?#">Đăng Bài Viết</a></li>
                         </ul>
                     </li>
                     <li class="has-submenu">
                         <a href="#"><i class="fas fa-flag"></i> Fanpage</a>
                         <ul class="submenu">
-                            <li><a href="count-liked.php?#">Đếm Like</a></li>
-                            <li><a href="scan-posts-page.php?#">Quét Bài Viết</a></li>
+                            <li><a href="count-liked.php?#">Analytics</a></li>
                         </ul>
                     </li>
                 </ul>

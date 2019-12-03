@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 use App\Controllers\BaseController;
-error_reporting(0);
+//error_reporting(0);
 class ExecuteController extends BaseController
 {
     public function __construct()
@@ -184,71 +184,8 @@ class ExecuteController extends BaseController
     }
     public function postToGroup($request)
     {
-        $endpoint = isset($request['attach'][0]) ? "https://www.facebook.com/composerx/intercept/media/?xhpc_message=L&xhpc_composerid=rc.js_16u&xhpc_targetid=450827202497458&av=100012668051362" : "https://www.facebook.com/composerx/intercept/status/?xhpc_message=Test&xhpc_composerid=rc.u_fetchstream_6_12&xhpc_targetid=450827202497458&av=100012668051362";
+        $endpoint = count($request['attach']) > 0 ? "https://www.facebook.com/composerx/intercept/media/?xhpc_message=".urlencode($request['message'])."&xhpc_composerid=rc.js_16u&xhpc_targetid=".$request['idGroup']."&av=".$request['id'] : "https://www.facebook.com/composerx/intercept/status/?xhpc_message=".urlencode($request['message'])."&xhpc_composerid=rc.u_fetchstream_6_12&xhpc_targetid=".$request['idGroup']."&av=".$request['id'];
         $data = [
-            'album_id' => null,
-            'asset3d_id' => null,
-            'asked_fun_fact_prompt_data' => null,
-            'attachment' => null,
-            'audience' => null,
-            'boosted_post_config' => null,
-            'breaking_news_expiration' => 0,
-            'breaking_news_selected' => false,
-            'cta_data' => null,
-            'composer_entry_point' => 'group',
-            'composer_entry_time' => rand(200,10000),
-            'composer_session_id' => '9e1cfdd4-1f93-440a-b587-0ac6f130db95',
-            'composer_session_duration' => rand(200,1000),
-            'composer_source_surface' => 'group',
-            'composertags_city' => null,
-            'composertags_place' => null,
-            'civic_product_source' => null,
-            'direct_share_status' => 0,
-            'sponsor_relationship' => 0,
-            'extensible_sprouts_ranker_request' => null, 
-            'feed_topics' => null,
-            'find_players_info' => null, 
-            'fun_fact_prompt_id' => null,
-            'hide_object_attachment' => false,
-            'has_support_now_cta' => false,
-            'is_explicit_place' => false,
-            'is_markdown' => false,
-            'is_ama' => false,
-            'is_post_to_group' => false,
-            'is_welcome_to_group_post' => false,
-            'is_q_and_a' => false,
-            'is_profile_badge_post' => false,
-            'story_list_attachment_data' => null,
-            'local_alert_data' =>  null,
-            'multilingual_specified_lang' => 'vi_VN',
-            'num_keystrokes' => 0,
-            'num_pastes' => 0,
-            'place_attachment_setting' => 1,
-            'poll_question_data' => null,
-            'privacyx' => null,
-            'prompt_id' => null,
-            'prompt_tracking_string' => null, 
-            'publisher_abtest_holdout' => null,
-            'ref' => 'group',
-            'stories_selected' => false,
-            'todo_list_data' => null,
-            'timeline_selected' => true,
-            'xc_sticker_id' => 0,
-            'event_tag' => null,
-            'target_type' => 'group',
-            'xhpc_message' => 'L',
-            'xhpc_message_text' => 'L',
-            'is_forced_reshare_of_post' => null,
-            'xc_disable_config' => null,
-            'delight_ranges' =>  [],
-            'holiday_card' => null,
-            'draft_id' => null,
-            'is_react' => true,
-            'xhpc_composerid' =>  'rc.js_16u',
-            'xhpc_targetid' => $request['idGroup'],
-            'xhpc_context' => 'profile',
-            'xhpc_timeline' => false,
-            'xhpc_finch' => false,
             'xhpc_aggregated_story_composer' => false,
             'xhpc_publish_type' => 1,
             'xhpc_fundraiser_page' => false,
@@ -256,7 +193,8 @@ class ExecuteController extends BaseController
             'unpublished_content_type' => null,
             'scheduled_publish_time' => null,
             'application' => 'composer',
-            'composer_unpublished_photo[0]' => (int)$request['attach'][0]['id'],
+            'xhpc_message' => $request['message'],
+            'xhpc_message_text' => $request['message'],
             'slideshow_spec' => null,
             'waterfallxapp' => 'web_react_composer',
             '__user' => $request['id'],
@@ -269,24 +207,56 @@ class ExecuteController extends BaseController
             '__spin_b' => 'trunk',
             '__spin_t' => 1575339071,
         ];
-        if(empty($request['attach'][0]))
+
+        if(count($request['attach']) > 0)
         {
-            $post = json_decode($this->removeTag($this->requestWithFields($endpoint,$data,$request['cookie'])),TRUE);
-            if(isset($post['error']))
+            foreach($request['attach'] as $key => $attach)
             {
-                return json_encode([
-                    'type' => 'error',
-                    'group_id' => $request['idGroup'],
-                    'group_name' => $request['groupName'], 
-                    'msg' => 'Chia sẻ thất bại',
-                    'reason' => $post['errorDescription'],
-                    'status' => 201
-                ]);
+                $data["composer_unpublished_photo[$key]"] = (int)$attach['id'];
             }
+        }
+        
+        $payload = $this->requestWithFields($endpoint,$data,$request['cookie']);
+        $post = json_decode($this->removeTag($payload),TRUE);
+
+        if(isset($post['error']))
+        {
+            return json_encode([
+                'type' => 'error',
+                'group_id' => $request['idGroup'],
+                'group_name' => $request['groupName'], 
+                'msg' => 'Chia sẻ thất bại ( '.$post['errorDescription'].' )',
+                'reason' => $post['errorDescription'],
+                'status' => 201
+            ]);
         }
         else
         {
-            return $this->requestWithFields($endpoint,$data,$request['cookie']);
+            $data = explode('for (;;);',$payload);
+            $data = json_decode($data[1],TRUE);
+
+            if(empty($data['payload']['story_fbid']))
+            {
+                $response = [
+                    'group_name' => $request['groupName'], 
+                    'status' => 201,
+                    'type' => 'error',
+                    'msg' => 'Lỗi xác thực Facebook, xin vui lòng nhập cookie mới',
+                    'group_id' => $request['idGroup']
+                ];
+            }
+            else
+            {
+                $response = [
+                    'post_id' => $data['payload']['story_fbid'],
+                    'group_name' => $request['groupName'], 
+                    'status' => 200,
+                    'type' => 'success',
+                    'msg' => 'Đăng bài viết lên nhóm thành công',
+                    'group_id' => $request['idGroup']
+                ];
+            }
+            return json_encode($response);
         }
     }
     public function postToMarket($request)
