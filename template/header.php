@@ -96,7 +96,6 @@
                     <li class="has-submenu">
                         <a href="#"><i class="fas fa-users"></i> Nhóm</a>
                         <ul class="submenu">
-                            <li><a href="post-market?#">Đăng Market Place</a></li>
                             <li><a href="post-group?#">Đăng Bài Viết</a></li>
                         </ul>
                     </li>

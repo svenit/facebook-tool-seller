@@ -22,8 +22,8 @@
                     <div class="col-lg-8">
                         <div class="card m-b-20">
                             <div class="card-body">
-                                <h4 class="mt-0 header-title">Đăng bài viết trên nhóm ( Market Place )</h4>
-                                <p class="text-muted m-b-30">Pro Tools</p>
+                                <h4 class="mt-0 header-title">Đăng bài viết trên nhóm</h4>
+                                <p class="text-muted m-b-30">Giúp bạn đăng bài viết trên tất cả nhóm bạn đang tham gia</p>
                                 <form class="" action="#" novalidate="">
                                 <div class="form-group">
                                     <label>Nhập Cookie</label>
