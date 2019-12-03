@@ -41,11 +41,11 @@
                                     </div>
                                     <br>
                                     <div class="clearfix"></div>
-                                    <div style="display:block" class="form-group">
-                                        <label style="display:block !important">ID Bài Viết</label>
-                                        <div><input data-parsley-type="number" v-model='input.postId' type="text" class="form-control post-id" required="" placeholder=""></div>
+                                    <div style="display:block !important" class="form-group">
+                                        <label>Số Tiền</label>
+                                        <div><input data-parsley-type="number" v-model='input.money' type="text" class="form-control post-id" required="" placeholder=""></div>
                                     </div>
-                                    <div class="form-group">
+                                    <div style="display:block !important" class="form-group">
                                         <label>Nội dung bài viết ( Cách nhau 1 dòng )</label>
                                         <div><textarea  v-model='input.content' class="form-control page-avoid-id" rows="5"></textarea></div>
                                     </div>
@@ -59,21 +59,8 @@
                                         <table class="table table-bordered">
                                             <p class="alert alert-info">{{ customeListGroupId.length }} nhóm đã được chọn</p>
                                             <div class="row">
-                                                <div class="col-10 input-group mb-3">
+                                                <div class="col-12 input-group mb-3">
                                                     <input @keyup="searchGroup" type="text" class="form-control" placeholder="Tìm kiếm" aria-label="Username" aria-describedby="basic-addon1">
-                                                </div>
-                                                <div class="col-2 input-group mb-3">
-                                                    <div class="dropdown">
-                                                        <a class="btn btn-default dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                            <span>Trang {{ paginate }}</span>
-                                                        </a>
-                                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                                            <a class="dropdown-item" @click="paginate = 10">10</a>
-                                                            <a class="dropdown-item" @click="paginate = 25">25</a>
-                                                            <a class="dropdown-item" @click="paginate = 50">50</a>
-                                                            <a class="dropdown-item" @click="paginate = 100">100</a>
-                                                        </div>
-                                                    </div>
                                                 </div>
                                             </div>
                                             <thead>
@@ -97,9 +84,9 @@
                                         </table>
                                         <nav aria-label="Page navigation example">
                                             <ul class="pagination">
-                                                <li class="page-item" :class="[current == 1 ? 'disabled' : '']"><a class="page-link" @click="gotoPage(current - 1)">Previous</a></li>
+                                                <li class="page-item" :class="[current == 1 ? 'disabled' : '']"><a class="page-link" @click="gotoPage(current - 1)">Trước</a></li>
                                                 <li v-for="n in Math.round(copyListGroupId.length/paginate)" :key="n" class="page-item" :class="[n == current ? 'active' : '']"><a class="page-link" @click="gotoPage(n)">{{ n }}</a></li>
-                                                <li class="page-item" :class="[current == Math.round(copyListGroupId.length/paginate) ? 'disabled' : '']"><a class="page-link" @click="gotoPage(current + 1)">Next</a></li>
+                                                <li class="page-item" :class="[current == Math.round(copyListGroupId.length/paginate) ? 'disabled' : '']"><a class="page-link" @click="gotoPage(current + 1)">Sau</a></li>
                                             </ul>
                                         </nav>
                                     </div>
@@ -114,8 +101,9 @@
                                 </div>
                                 <div class="form-group">
                                     <div>
-                                        <button type="submit" v-if="options.getGroupId == 'custome' && listGroupId.length > 0 || copyListGroupId.length > 0" @click="share(null,null,null,'share-post')" class="btn btn-primary waves-effect waves-light submit">Bắt Đầu ( {{ customeListGroupId.length }} )</button> 
-                                        <button type="submit" v-else @click="request('share-post')" class="btn btn-primary waves-effect waves-light submit">{{ options.getGroupId == 'custome' && listGroupId.length == 0 && copyListGroupId.length == 0 ? 'Lấy Danh Sách ID Nhóm' : 'Bắt Đầu' }}</button> 
+                                        <button type="submit" v-if="!defaultValue.cookie && !defaultValue.fb_dtsg" @click="request()" class="btn btn-primary waves-effect waves-light submit">Xác Thực Cookie</button> 
+                                        <button type="submit" v-else-if="options.getGroupId == 'custome' && listGroupId.length == 0 && copyListGroupId.length == 0" @click="getGroupId()" class="btn btn-primary waves-effect waves-light submit">Lấy Danh Sách Nhóm</button> 
+                                        <button type="submit" v-if="options.getGroupId == 'custome' && listGroupId.length > 0 || copyListGroupId.length > 0" @click="share(null,null,null,'post-market')" class="btn btn-primary waves-effect waves-light submit">Bắt Đầu ( {{ customeListGroupId.length }} )</button>
                                     </div>
                                 </div>
                                 </form>

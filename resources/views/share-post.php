@@ -47,21 +47,8 @@
                                     <table class="table table-bordered">
                                         <p class="alert alert-info">{{ customeListGroupId.length }} nhóm đã được chọn</p>
                                         <div class="row">
-                                            <div class="col-10 input-group mb-3">
+                                            <div class="col-12 input-group mb-3">
                                                 <input @keyup="searchGroup" type="text" class="form-control" placeholder="Tìm kiếm" aria-label="Username" aria-describedby="basic-addon1">
-                                            </div>
-                                            <div class="col-2 input-group mb-3">
-                                                <div class="dropdown">
-                                                    <a class="btn btn-default dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                        <span>Trang {{ paginate }}</span>
-                                                    </a>
-                                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                                        <a class="dropdown-item" @click="paginate = 10">10</a>
-                                                        <a class="dropdown-item" @click="paginate = 25">25</a>
-                                                        <a class="dropdown-item" @click="paginate = 50">50</a>
-                                                        <a class="dropdown-item" @click="paginate = 100">100</a>
-                                                    </div>
-                                                </div>
                                             </div>
                                         </div>
                                         <thead>
@@ -70,7 +57,7 @@
                                                 <th style="width:200px" class="text-center" scope="col">Tên Nhóm</th>
                                                 <th class="text-center" scope="col">ID</th>
                                                 <th class="text-center" scope="col">Đã Đăng</th>
-                                                <th class="text-center" scope="col">Chọn</th>
+                                                <th class="text-center" scope="col">Chọn <input v-model="allSelected" type="checkbox" @click="selectAll"></th>
                                             </tr>
                                         </thead>
                                         <tbody>

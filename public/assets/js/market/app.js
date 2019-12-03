@@ -10,7 +10,7 @@ new Vue({
         status:'',
         input: {
             cookie: '',
-            postId: '',
+            money: 0,
             content: '',
             groupId:'',
             sleep: 5
@@ -29,7 +29,7 @@ new Vue({
         images:[]
     },
     methods:{
-        async request(route)
+        async request()
         {
             
             if(this.input.cookie.trim())
@@ -63,8 +63,8 @@ new Vue({
             this.loading = true;
             this.toast('Đang tìm kiếm danh sách nhóm','warning');
             let res = await axios.post('routes/api.php',{
-                cookie:cookie,
-                fb_dtsg:fb_dtsg,
+                cookie:cookie || this.defaultValue.cookie,
+                fb_dtsg:fb_dtsg || this.defaultValue.fb_dtsg,
                 route:'get-group-id'
             });
             this.toast(res.data.msg,res.data.type);
@@ -92,22 +92,23 @@ new Vue({
                 this.listGroupId = this.customeListGroupId;
             }
             this.loading = true;
-            this.toast('Chuẩn bị tiến hành share bài viết','warning');
+            this.toast('Chuẩn bị tiến hành đăng bài viết','warning');
             for(let key in this.listGroupId)
             {
                 const messages = this.input.content.split("\n");
                 let randomMsg = messages[Math.floor((Math.random() * messages.length))];
                 await this.sleep(1000 * this.input.sleep);
-                console.log(`%c => ${key}. Tiến hành share bài viết vào nhóm ${this.listGroupId[key].name} ( ${this.listGroupId[key].id} )`,'background: #222; color: #bada55');
-                this.toast(`Đang tiến hành share bài viết vào nhóm ${this.listGroupId[key].name} ( ${this.listGroupId[key].id} )`,'warning');
+                console.log(`%c => ${key}. Tiến hành đăng bài viết vào nhóm ${this.listGroupId[key].name} ( ${this.listGroupId[key].id} )`,'background: #222; color: #bada55');
+                this.toast(`Đang tiến hành đăng bài viết vào nhóm ${this.listGroupId[key].name} ( ${this.listGroupId[key].id} )`,'warning');
                 let res = await axios.post('routes/api.php',{
                     cookie:cookie || this.defaultValue.cookie,
                     id:parseInt(id) || parseInt(this.defaultValue.id),
                     fb_dtsg:fb_dtsg || this.defaultValue.fb_dtsg,
                     message:randomMsg,
-                    postId:parseInt(this.input.postId),
+                    money:parseInt(this.input.money),
                     idGroup:parseInt(this.listGroupId[key].id),
                     groupName:this.listGroupId[key].name,
+                    attach:this.images,
                     route:route
                 });
                 this.toast(res.data.msg,res.data.type);
@@ -127,20 +128,21 @@ new Vue({
         },
         async uploadImage(e)
         {
-            for(let key in e.target.files)
+            for(var i = 0; i < e.target.files.length;i++)
             {
+                console.log(e.target.files);
                 this.loading = true;
                 this.toast('Đang tải ảnh lên','info');
                 var form = new FormData();
-                form.append('farr',e.target.files[key]);
+                form.append('farr',e.target.files[i]);
                 form.append('cookie',this.defaultValue.cookie);
                 form.append('fb_dtsg',this.defaultValue.fb_dtsg);
                 form.append('id',this.defaultValue.id);
                 form.append('route','upload-image');
                 let res = await axios.post('routes/api.php?route=upload-image',form);
+                this.toast(res.data.msg,res.data.type);
                 if(res.data.status == 200)
                 {
-                    this.toast(res.data.msg,res.data.type);
                     this.images.push({
                         id:res.data.photo_id,
                         url:res.data.url

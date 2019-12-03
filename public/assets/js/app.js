@@ -25,7 +25,8 @@ new Vue({
             cookie:'',
             fb_dtsg:'',
             id:''
-        }
+        },
+        allSelected:false
     },
     methods:{
         async request(route)
@@ -152,6 +153,19 @@ new Vue({
             let res = await axios.post('routes/api.php',{
                 cookie:this.input.cookie,
             });
+        },
+        selectAll()
+        {
+            this.customeListGroupId = [];
+            if(!this.allSelected)
+            {
+                this.copyListGroupId.forEach((each) => {
+                    this.customeListGroupId.push({
+                        id:each.id,
+                        name:each.name
+                    });
+                });
+            }
         },
         toast(text,status)
         {

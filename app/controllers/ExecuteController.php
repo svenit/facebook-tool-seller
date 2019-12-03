@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 use App\Controllers\BaseController;
-//error_reporting(0);
+error_reporting(0);
 class ExecuteController extends BaseController
 {
     public function __construct()
@@ -21,7 +21,7 @@ class ExecuteController extends BaseController
                 if(isset($userDetail['id'],$userDetail['fbDtsg']))
                 {
                     return json_encode([
-                        'msg' => 'Xác thực cookie thành công !',
+                        'msg' => 'Xin chào, '.$userDetail['name'].' ! Xác thực cookie thành công !',
                         'id' => $userDetail['id'],
                         'fb_dtsg' => $userDetail['fbDtsg'],
                         'type' => 'success',
@@ -101,7 +101,7 @@ class ExecuteController extends BaseController
     {
         if(isset($request))
         {
-            $share = $this->requestWithFields('https://www.facebook.com/ajax/updatestatus.php?av='.$request['id'].'','album_id&asset3d_id&asked_fun_fact_prompt_data&attachment[params][0]='.$request['postId'].'&attachment[type]=11&attachment[reshare_original_post]=false&attachment[shared_from_post_id]='.$request['postId'].'&audience&boosted_post_config&breaking_news_expiration=0&breaking_news_selected=false&cta_data&composer_entry_point=group&composer_entry_time=202&composer_session_id=ce18bace-1d94-4472-9f86-f54b77f85be0&composer_session_duration=10&composer_source_surface=group&composertags_city&composertags_place&civic_product_source&direct_share_status=0&sponsor_relationship=0&branded_content_data&extensible_sprouts_ranker_request&feed_topics&find_players_info&fun_fact_prompt_id&group_post_tag_ids&hide_object_attachment=false&has_support_now_cta=false&is_explicit_place=false&is_markdown=false&is_post_to_group=false&is_welcome_to_group_post=false&is_q_and_a=false&is_profile_badge_post=false&story_list_attachment_data&local_alert_expiration&multilingual_specified_lang=&num_keystrokes=6&num_pastes=0&place_attachment_setting=1&poll_question_data&privacyx&prompt_id&prompt_tracking_string&publisher_abtest_holdout&ref=group&stories_selected=false&todo_list_data&timeline_selected=true&xc_sticker_id=0&event_tag&target_type=group&xhpc_message='.$request['message'].'&xhpc_message_text='.$request['message'].'&is_forced_reshare_of_post=false&xc_disable_config&delight_ranges=[]&holiday_card&xc_share_params=['.$request['postId'].']&xc_share_target_type=11&is_react=true&xhpc_composerid=rc.u_fetchstream_1_14&xhpc_targetid='.$request['idGroup'].'&xhpc_context=profile&xhpc_timeline=false&xhpc_finch=false&xhpc_aggregated_story_composer=false&xhpc_publish_type=1&xhpc_fundraiser_page=false&scheduled=false&unpublished_content_type&scheduled_publish_time&detection_analytics_data[detection_id]=7ab2a3b2-439c-43fe-a8c6-011f4721fdd3&detection_analytics_data[device_advertising_id]&detection_analytics_data[product_id]=54&__user='.$request['id'].'&__a=1&__req=31&__be=1&__pc=PHASED%3Aufi_home_page_pkg&dpr=1&__rev=1000712384&__s=7yzdog%3A6t3cm5%3Avkf3tc&fb_dtsg='.$request['fb_dtsg'].'&jazoest=22115&__spin_r=1000712384&__spin_b=trunk&__spin_t=1557889430',$request['cookie']);
+            $share = $this->requestWithFields('https://www.facebook.com/ajax/updatestatus.php?av='.$request['id']. '','album_id&asset3d_id&asked_fun_fact_prompt_data&attachment[params][0]='.$request['postId'].'&attachment[type]=11&attachment[reshare_original_post]=false&attachment[shared_from_post_id]='.$request['postId'].'&audience&boosted_post_config&breaking_news_expiration=0&breaking_news_selected=false&cta_data&composer_entry_point=group&composer_entry_time=202&composer_session_id=ce18bace-1d94-4472-9f86-f54b77f85be0&composer_session_duration=10&composer_source_surface=group&composertags_city&composertags_place&civic_product_source&direct_share_status=0&sponsor_relationship=0&branded_content_data&extensible_sprouts_ranker_request&feed_topics&find_players_info&fun_fact_prompt_id&group_post_tag_ids&hide_object_attachment=false&has_support_now_cta=false&is_explicit_place=false&is_markdown=false&is_post_to_group=false&is_welcome_to_group_post=false&is_q_and_a=false&is_profile_badge_post=false&story_list_attachment_data&local_alert_expiration&multilingual_specified_lang=&num_keystrokes=6&num_pastes=0&place_attachment_setting=1&poll_question_data&privacyx&prompt_id&prompt_tracking_string&publisher_abtest_holdout&ref=group&stories_selected=false&todo_list_data&timeline_selected=true&xc_sticker_id=0&event_tag&target_type=group&xhpc_message='.$request['message'].'&xhpc_message_text='.$request['message'].'&is_forced_reshare_of_post=false&xc_disable_config&delight_ranges=[]&holiday_card&xc_share_params=['.$request['postId'].']&xc_share_target_type=11&is_react=true&xhpc_composerid=rc.u_fetchstream_1_14&xhpc_targetid='.$request['idGroup'].'&xhpc_context=profile&xhpc_timeline=false&xhpc_finch=false&xhpc_aggregated_story_composer=false&xhpc_publish_type=1&xhpc_fundraiser_page=false&scheduled=false&unpublished_content_type&scheduled_publish_time&detection_analytics_data[detection_id]=7ab2a3b2-439c-43fe-a8c6-011f4721fdd3&detection_analytics_data[device_advertising_id]&detection_analytics_data[product_id]=54&__user='.$request['id'].'&__a=1&__req=31&__be=1&__pc=PHASED%3Aufi_home_page_pkg&dpr=1&__rev=1000712384&__s=7yzdog%3A6t3cm5%3Avkf3tc&fb_dtsg='.$request['fb_dtsg'].'&jazoest=22115&__spin_r=1000712384&__spin_b=trunk&__spin_t=1557889430',$request['cookie']);
             $postId = $this->DOM($share);
             if(isset($postId))
             {
@@ -182,8 +182,183 @@ class ExecuteController extends BaseController
             ];
         }
     }
+    public function postToGroup($request)
+    {
+        $endpoint = isset($request['attach'][0]) ? "https://www.facebook.com/composerx/intercept/media/?xhpc_message=L&xhpc_composerid=rc.js_16u&xhpc_targetid=450827202497458&av=100012668051362" : "https://www.facebook.com/composerx/intercept/status/?xhpc_message=Test&xhpc_composerid=rc.u_fetchstream_6_12&xhpc_targetid=450827202497458&av=100012668051362";
+        $data = [
+            'album_id' => null,
+            'asset3d_id' => null,
+            'asked_fun_fact_prompt_data' => null,
+            'attachment' => null,
+            'audience' => null,
+            'boosted_post_config' => null,
+            'breaking_news_expiration' => 0,
+            'breaking_news_selected' => false,
+            'cta_data' => null,
+            'composer_entry_point' => 'group',
+            'composer_entry_time' => rand(200,10000),
+            'composer_session_id' => '9e1cfdd4-1f93-440a-b587-0ac6f130db95',
+            'composer_session_duration' => rand(200,1000),
+            'composer_source_surface' => 'group',
+            'composertags_city' => null,
+            'composertags_place' => null,
+            'civic_product_source' => null,
+            'direct_share_status' => 0,
+            'sponsor_relationship' => 0,
+            'extensible_sprouts_ranker_request' => null, 
+            'feed_topics' => null,
+            'find_players_info' => null, 
+            'fun_fact_prompt_id' => null,
+            'hide_object_attachment' => false,
+            'has_support_now_cta' => false,
+            'is_explicit_place' => false,
+            'is_markdown' => false,
+            'is_ama' => false,
+            'is_post_to_group' => false,
+            'is_welcome_to_group_post' => false,
+            'is_q_and_a' => false,
+            'is_profile_badge_post' => false,
+            'story_list_attachment_data' => null,
+            'local_alert_data' =>  null,
+            'multilingual_specified_lang' => 'vi_VN',
+            'num_keystrokes' => 0,
+            'num_pastes' => 0,
+            'place_attachment_setting' => 1,
+            'poll_question_data' => null,
+            'privacyx' => null,
+            'prompt_id' => null,
+            'prompt_tracking_string' => null, 
+            'publisher_abtest_holdout' => null,
+            'ref' => 'group',
+            'stories_selected' => false,
+            'todo_list_data' => null,
+            'timeline_selected' => true,
+            'xc_sticker_id' => 0,
+            'event_tag' => null,
+            'target_type' => 'group',
+            'xhpc_message' => 'L',
+            'xhpc_message_text' => 'L',
+            'is_forced_reshare_of_post' => null,
+            'xc_disable_config' => null,
+            'delight_ranges' =>  [],
+            'holiday_card' => null,
+            'draft_id' => null,
+            'is_react' => true,
+            'xhpc_composerid' =>  'rc.js_16u',
+            'xhpc_targetid' => $request['idGroup'],
+            'xhpc_context' => 'profile',
+            'xhpc_timeline' => false,
+            'xhpc_finch' => false,
+            'xhpc_aggregated_story_composer' => false,
+            'xhpc_publish_type' => 1,
+            'xhpc_fundraiser_page' => false,
+            'scheduled' => false,
+            'unpublished_content_type' => null,
+            'scheduled_publish_time' => null,
+            'application' => 'composer',
+            'composer_unpublished_photo[0]' => (int)$request['attach'][0]['id'],
+            'slideshow_spec' => null,
+            'waterfallxapp' => 'web_react_composer',
+            '__user' => $request['id'],
+            '__a' => 1,
+            '__csr' =>  null,
+            '__pc' => 'PHASED:DEFAULT',
+            'fb_dtsg' => $request['fb_dtsg'],
+            'jazoest' => 22121,
+            '__spin_r' => 1001482095,
+            '__spin_b' => 'trunk',
+            '__spin_t' => 1575339071,
+        ];
+        if(empty($request['attach'][0]))
+        {
+            $post = json_decode($this->removeTag($this->requestWithFields($endpoint,$data,$request['cookie'])),TRUE);
+            if(isset($post['error']))
+            {
+                return json_encode([
+                    'type' => 'error',
+                    'group_id' => $request['idGroup'],
+                    'group_name' => $request['groupName'], 
+                    'msg' => 'Chia sẻ thất bại',
+                    'reason' => $post['errorDescription'],
+                    'status' => 201
+                ]);
+            }
+        }
+        else
+        {
+            return $this->requestWithFields($endpoint,$data,$request['cookie']);
+        }
+    }
     public function postToMarket($request)
     {
+        $storyEndpoint = "https://www.facebook.com/webgraphql/mutation/?doc_id=1740513229408093";
+        $storyData = [
+            '__hsi' => '6766000130703526326-0',
+            '__rev' => 1001480872,
+            '__user' => $request['id'],
+            '__spin_t' => 1575303313,
+            '__spin_r' => 1001480872,
+            'jazoest' => 21977,
+            '__s' => 'dckpbm:y9yv6u:39vyre',
+            'fb_dtsg' => $request['fb_dtsg'],
+            '__dyn' => '7AgNeS4amaWxd2u6aJGi9FxqeCwKyaF3ozGaiheCHxG4U9ES2N6xCagjGqK6otyEnCwMyaGubyRUC6UnGiidBCBXyEjF3e3KFUmzUggOdxK4rh4jUXU8S69V8FfyGzpFQcy42G5UKbGVoyaxG4o4O5lwxCypHh43Hg-ezFEmUC1mDBg5uaCCy894Hx6WBBKdxyho-ez9ECnhteEdRVpo-7UKVEkyoOmi9yF85XximfKK5VEtxi4otQdhVoOjyEaLK6Ux4ojUC6p8gUScBKmbDzUkwAyECmudx62abxuE9EKfAmF48K-quV8ycx6bxm4UGWzU4uVQuFpUgy8y5XxPByoCeCgS5AbxSu5S7EsyUy4ErxG1fx6fAwDxy5qxNDxeu3G4p8tyb-2efxW8Kqi5pob89EbaxS2G',
+            'variables' => json_encode([
+                'client_mutation_id' => 'fe275e5e-0e9b-4f73-98fe-6b9598738d44',
+                'actor_id' => $request['id'],
+                'input' => [
+                    'actor_id' => $request['id'],
+                    'client_mutation_id' => '1f18b293-7740-4b0f-9896-7024da390f4c',
+                    'source' => 'WWW',
+                    'audience' => [
+                        'to_id' => $request['idGroup'],
+                    ],
+                    'logging' => [
+                        'composer_session_id' => '357cb267-5d42-4155-841a-420724b8ae21',
+                        'ref' => 'group'
+                    ],
+                    'with_tags_ids' => [],
+                    'multilingual_translations' => [],
+                    'composer_source_surface' => 'group',
+                    'composer_entry_point' => 'group',
+                    'composer_entry_time' => 7,
+                    'composer_session_events_log' => [
+                        'composition_duration' => 42
+                    ],
+                    'branded_content_data' => [],
+                    'direct_share_status' => 'NOT SHARED',
+                    'sponsor_relationship' => 'WITH',
+                    'web_graphml_migration_params' => [
+                        'target_type' => 'group',
+                        'xhpc_composerid' => 'rc.u_fetchstream_8_6',
+                        'xhpc_context' => 'profile',
+                        'xhpc_publish_type' => 'FEED_INSERT',
+                        'waterfall_id' => '357cb267-5d42-4155-841a-420724b8ae21',
+                        'xpost_to_marketplace' => true,
+                        'xpost_target_ids' => $request['idGroup']
+                    ],
+                    'external_movie_data' => [],
+                    'place_attachment_setting' => 'HIDE_ATTACHMENT',
+                    'attachments' => [
+                        0 => [
+                            'photo' => [
+                                'id' => 818748341890760,
+                                'tags' => []
+                            ]
+                        ]
+                    ],
+                    'product_item' => [
+                        'title' => 'Ban cho',
+                        'item_price' => [
+                            'price' => 1,
+                            'currency' => 'VND'
+                        ],
+                        'location_page_id' => null,
+                        'condition' => 'USED'
+                    ]
+                ]
+            ])
+        ];
+        return $this->requestWithFields($storyEndpoint,$storyData,$request['cookie']);
         $endpoint = "https://www.facebook.com/async/publisher/creation-hooks/?av=".$request['id'];
         $data = [
             'data[audience][to_id]' => $request['idGroup'],
@@ -239,11 +414,16 @@ class ExecuteController extends BaseController
     }
     public function DOM($share)
     {
-        $str = explode('for (;;);',$share);
-        $str = str_replace('"{', "{", $str[1]);
-        $str = str_replace('}"', "}", $str);
+        $str = $this->removeTag($share);
         $jsonObject = json_decode($str,TRUE);
         return isset($jsonObject['jsmods']['require'][2][3][1]['contentID']) ? $jsonObject['jsmods']['require'][2][3][1]['contentID'] : NULL ;
+    }
+    public function removeTag($string)
+    {
+        $str = explode('for (;;);',$string);
+        $str = str_replace('"{', "{", $str[1]);
+        $str = str_replace('}"', "}", $str);
+        return $str;
     }
     public function uploadImage($request)
     {
