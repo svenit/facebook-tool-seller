@@ -1,8 +1,8 @@
 <?php
     ob_flush();
     error_reporting(0);
-    session_start();
     $_SESSION['js'] = 'index/no.js';
+
     require __DIR__.'../../../vendor/autoload.php';
     require __DIR__.'../../../app/middleware/auth.php';
 

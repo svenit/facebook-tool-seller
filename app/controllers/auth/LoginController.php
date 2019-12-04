@@ -3,6 +3,7 @@
     namespace App\Controllers\Auth;
     use App\Model\Connect as Builder;
     use PDO;
+    use Exception;
     session_start();
     class LoginController extends Builder
     {

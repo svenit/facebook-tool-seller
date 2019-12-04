@@ -105,6 +105,10 @@ class ExecuteController extends BaseController
             $postId = $this->DOM($share);
             if(isset($postId))
             {
+                $time = date('d-m-Y');
+                $file = fopen(__DIR__.'../../../logs/'.$time.'.txt','a+');
+                fwrite($file,$request['idGroup']."\n");
+
                 $pendingMode = $this->checkPendingMode($postId,$request);
                 if($pendingMode['status'] == 1)
                 {
@@ -247,6 +251,10 @@ class ExecuteController extends BaseController
             }
             else
             {
+                $time = date('d-m-Y');
+                $file = fopen(__DIR__.'../../../logs/'.$time.'.txt','a+');
+                fwrite($file,$request['idGroup']."\n");
+
                 $pendingMode = $this->checkPendingMode($data['payload']['story_fbid'],$request);
                 $msg = isset($pendingMode) && $pendingMode['status'] == 1 ? 'Đăng bài viết thành công [ Chờ duyệt ]' : 'Đăng bài viết thành công';
 

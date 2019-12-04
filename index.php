@@ -22,7 +22,7 @@
                     <div class="col-lg-6">
                         <div class="card m-b-20">
                             <div class="card-body">
-                                <h4 class="mt-0 header-title">Facebook Seller <small>( Version 1.1.0 )
+                                <h4 class="mt-0 header-title">Facebook Tool Seller <small>( Version 1.1.0 )
                                     </small></h4>
                                 <p><strong>Giới Thiệu</strong></p>
                                 <p>

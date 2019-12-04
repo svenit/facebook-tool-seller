@@ -4,14 +4,17 @@ require __DIR__.'/../vendor/autoload.php';
 require __DIR__.'../../app/middleware/auth.php';
 
 use App\Controllers\ExecuteController;
+use App\Controllers\Auth\Auth;
+
 session_start();
 
 $request = json_decode(file_get_contents('php://input'),TRUE);
 $exec = new ExecuteController();
+$auth = new Auth;
 
-if(isset($_SESSION['user'][0]->id) || !$auth->config('auth.authenticate'))
+if($auth->check() || !$auth->config('auth.authenticate'))
 {
-    if(isset($_SESSION['user'][0]->expired) && $_SESSION['user'][0]->expired >= date('Y-m-d') || !$auth->config('auth.authenticate'))
+    if($auth->user()->expired > date('Y-m-d') || !$auth->config('auth.authenticate'))
     {
         switch($request['route'])
         {
@@ -49,7 +52,7 @@ if(isset($_SESSION['user'][0]->id) || !$auth->config('auth.authenticate'))
     else
     {
         echo json_encode([
-            'msg' => 'Tài khoản của bạn đã hết hạn sử dụng',
+            'msg' => 'Tài khoản của bạn đã hết hạn sử dụng, vui lòng liên hệ admin để gia hạn',
             'type' => 'error',
             'status' => 201
         ]);

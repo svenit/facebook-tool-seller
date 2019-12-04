@@ -4,6 +4,7 @@
     use App\Model\Connect as Builder;
     use App\Helper\Curl;
     use PDO;
+    use Exception;
 
     class RegisterController extends Builder
     {
@@ -82,7 +83,7 @@
                     else
                     {
                         $createAccount = $this->connect->prepare("INSERT INTO users(name,password,username,expired) VALUES(?,?,?,?)");
-                        if($createAccount->execute([$name,md5($password),$username,date('Y-m-d', strtotime(date('Y-m-d'). ' + 3 days'))]))
+                        if($createAccount->execute([$name,md5($password),$username,date('Y-m-d')]))
                         {
                             return [
                                 'status' => 200,

@@ -35,8 +35,7 @@
                                                         class="mdi mdi-account-circle m-r-5"></i> <?php echo $_SESSION['user'][0]->name ?></a>
                                                 <a onclick="alert('ID : ' + <?php echo $_SESSION['user'][0]->id ?> + '\n' + 'Tên tài khoản : <?php echo $_SESSION['user'][0]->username ?>' + '\n' + 'Tên : <?php echo $_SESSION['user'][0]->name ?>' +  '\n' + 'Ngày hết hạn : <?php echo $_SESSION['user'][0]->expired ?>')" class="dropdown-item"><i
                                                         class="mdi mdi-memory m-r-5"></i> Xem Thông Tin</a>
-                                                <a class="dropdown-item" href="https://facebook.com/sven307"><i class="mdi mdi-wallet m-r-5"></i> Liên
-                                                    hệ</a>
+                                                <a class="dropdown-item" href="https://www.facebook.com/messages/t/sven307"><i class="mdi mdi-wallet m-r-5"></i> Gia Hạn Tài Khoản</a>
                                                 <a class="dropdown-item" href="logout"><i class="mdi mdi-logout m-r-5"></i> Đăng Xuất</a>
                                             </div>
                                         </div>

@@ -2,7 +2,7 @@
 
     $config = [
         'auth' => [ 
-            'authenticate' => false,
+            'authenticate' => true,
         ]
     ];
 
