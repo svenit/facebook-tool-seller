@@ -64,7 +64,7 @@ class ExecuteController extends BaseController
             ])
         ];
         $listGroupId = json_decode($this->requestWithFields($endpoint,$data,$request['cookie']),TRUE);
-        $logs = @file_get_contents(__DIR__.'../../../logs/'.date('d-m-Y').'.txt');
+        $logs = @file_get_contents(__DIR__.'../../../logs/'.$request['path'].'-'.date('d-m-Y').'.txt');
         foreach($listGroupId['data']['viewer']['account_user']['groups']['edges'] as $key => $groupId)
         {
             $response[$key]['id'] = $groupId['node']['id'];
@@ -106,7 +106,7 @@ class ExecuteController extends BaseController
             if(isset($postId))
             {
                 $time = date('d-m-Y');
-                $file = fopen(__DIR__.'../../../logs/'.$time.'.txt','a+');
+                $file = fopen(__DIR__.'../../../logs/'.'share-live-stream-'.$time.'.txt','a+');
                 fwrite($file,$request['idGroup']."\n");
 
                 $pendingMode = $this->checkPendingMode($postId,$request);
@@ -144,7 +144,7 @@ class ExecuteController extends BaseController
     public function sharePost($request)
     {
         $time = date('d-m-Y');
-        $file = fopen(__DIR__.'../../../logs/'.$time.'.txt','a+');
+        $file = fopen(__DIR__.'../../../logs/'.'share-post-'.$time.'.txt','a+');
         if(isset($request))
         {
             $endpoint = "https://www.facebook.com/share/dialog/submit/?audience_type=group&audience_targets[0]=".$request['idGroup']."&composer_session_id=6b0dc63b-7f4d-4e23-abf1-58150d40c6ec&ephemeral_ttl_mode=0&internalextra[feedback_source]=22&message=".urlencode($request['message'])."&post_id=".$request['postId']."&share_to_group_as_page=false&share_type=22&shared_ad_id=&source=osbach&is_throwback_post=false&url=&shared_from_post_id=".$request['postId']."&logging_session_id=31d3a8ba-4a06-4e62-9e13-11d33d3354b0&perform_messenger_logging=true&video_start_time_ms=0&is_app_content_token=false&av=".$request['id'];
@@ -252,7 +252,7 @@ class ExecuteController extends BaseController
             else
             {
                 $time = date('d-m-Y');
-                $file = fopen(__DIR__.'../../../logs/'.$time.'.txt','a+');
+                $file = fopen(__DIR__.'../../../logs/'.'post-group-'.$time.'.txt','a+');
                 fwrite($file,$request['idGroup']."\n");
 
                 $pendingMode = $this->checkPendingMode($data['payload']['story_fbid'],$request);

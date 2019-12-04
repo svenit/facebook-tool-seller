@@ -25,7 +25,8 @@ Giờ đây bạn chỉ cần một cú click chuột là có thể đưa bài v
 
 Facebook Tool Seller yêu cầu :
 PHP >= 5.0
-Máy chủ ảo : [ Xampp ](https://www.apachefriends.org/index.html)  
+
+Máy chủ ảo : [ Xampp ](https://www.apachefriends.org/index.html)  hoặc máy chủ ảo nào..
 
 ```sh
 $ composer dump-autoload

@@ -67,7 +67,8 @@ new Vue({
             let res = await axios.post('routes/api.php',{
                 cookie:cookie || this.defaultValue.cookie,
                 fb_dtsg:fb_dtsg || this.defaultValue.fb_dtsg,
-                route:'get-group-id'
+                route:'get-group-id',
+                path:path
             });
             this.toast(res.data.msg,res.data.type);
             if(res.data.status == 200)

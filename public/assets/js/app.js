@@ -82,7 +82,14 @@ new Vue({
                                 });
                             });
                             this.toast(`Lấy danh sách thành công ! ${this.listGroupId.length} nhóm sẵn sàng !`,'success');
-                            await this.share(cookies[key],res.data.id,res.data.fb_dtsg,route);
+                            if(this.listGroupId.length > 0)
+                            {
+                                await this.share(cookies[key],res.data.id,res.data.fb_dtsg,route);
+                            }
+                            else
+                            {
+                                this.toast('Không có nhóm nào để thực hiện','error');
+                            }
                         }
                     }
                 }
@@ -93,14 +100,15 @@ new Vue({
                 swal('','Bạn chưa nhập đầy đủ thông tin','info');
             }
         },
-        async getGroupId(cookie,id,fb_dtsg,route)
+        async getGroupId(cookie,id,fb_dtsg,path)
         {
             this.loading = true;
             this.toast('Đang tìm kiếm danh sách nhóm','warning');
             let res = await axios.post('routes/api.php',{
                 cookie:cookie,
                 fb_dtsg:fb_dtsg,
-                route:'get-group-id'
+                route:'get-group-id',
+                path:path
             });
             this.toast(res.data.msg,res.data.type);
             if(res.data.status == 200)
