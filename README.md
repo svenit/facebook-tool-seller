@@ -1,2 +1,45 @@
-# Share-Live-Stream
-Tool này trị giá 1 củ ^^
+# Facebook Tool Seller
+
+[![Build Status](https://travis-ci.org/joemccann/dillinger.svg?branch=master)](https://travis-ci.org/joemccann/dillinger)
+
+Việc chia sẻ bài viết của mình vào các NHÓM nhằm tiếp cận khách hàng tiềm năng bằng thủ công tốn rất nhiều thời gian cho việc này. Giờ đây chúng tôi đã có Facebook Tool Seller công cụ chia sẻ bài viết vào các nhóm tài khoản đang có nhằm giúp tiết kiệm thời gian và giảm chi phí Marketing.
+
+  - Tự động đăng bài lên các nhóm đã tham gia
+  - Tự động share bài viết lên các nhóm đã tham gia
+  - Tự động chia sẻ live stream lên các nhóm đã tham gia
+
+Giờ đây bạn chỉ cần một cú click chuột là có thể đưa bài viết của bạn đến tất cả mọi người
+
+### Công Nghệ
+
+
+* [HTML] 
+* [CSS] 
+* [JavaScript] 
+* [PHP] 
+* [VueJS] 
+* [Facebook API] 
+
+
+### Cài Đặt
+
+Facebook Tool Seller yêu cầu :
+PHP >= 5.0
+Máy chủ ảo : [ Xampp ](https://www.apachefriends.org/index.html)  
+
+```sh
+$ composer dump-autoload
+```
+Mở trình duyệt và gõ : [localhost](http://localhost])
+### Nhà Phát Triển
+
+- **Lê Quang Vỹ**
+
+License
+----
+
+MIT
+
+
+**Facebook Tool Seller v1.0.1**
+
