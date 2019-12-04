@@ -438,4 +438,43 @@ class ExecuteController extends BaseController
             ]);
         }
     }
+    public function getCookie($request)
+    {
+        $endpoint = "https://b-graph.facebook.com/auth/login?generate_session_cookies=1&email=".$request['username']."&password=".$request['password']."&access_token=6628568379%7Cc1e620fa708a1d5696fb991c1bde5662&method=POST";
+        $get = json_decode($this->requestRaw($endpoint),TRUE);
+        if(isset($get['error']['message']))
+        {
+            return json_encode([
+                'type' => 'error',
+                'code' => 201,
+                'msg' => $get['error']['message']
+            ]);
+        }
+        else
+        {
+            if(isset($get['access_token']))
+            {
+                $cookie = '';
+                foreach($get['session_cookies'] as $key => $item)
+                {
+                    $cookie .= $item['name'].'='.$item['value'].';';
+                }
+                return json_encode([
+                    'type' => 'success',
+                    'code' => 200,
+                    'msg' => 'Thành công',
+                    'cookie' => $cookie,
+                    'token' => $get['access_token']
+                ]);
+            }
+            else
+            {
+                return json_encode([
+                    'type' => 'error',
+                    'code' => 201,
+                    'msg' => 'Đã có lỗi xảy ra'
+                ]);
+            }
+        }
+    }
 }

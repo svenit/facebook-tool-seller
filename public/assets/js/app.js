@@ -26,7 +26,15 @@ new Vue({
             fb_dtsg:'',
             id:''
         },
-        allSelected:false
+        allSelected:false,
+        cookie:{
+            username:'',
+            password:''
+        },
+        data:{
+            token:'',
+            cookie:''
+        }
     },
     methods:{
         async request(route)
@@ -151,13 +159,29 @@ new Vue({
             }
             this.loading = false;
         },
-        async uploadImage(e)
+        async getCookie()
         {
-            var form = new FormData();
-            form.append('farr',e.target.files[0]);
-            let res = await axios.post('routes/api.php',{
-                cookie:this.input.cookie,
-            });
+            try
+            {
+                this.loading = true;
+                this.toast('Đang tải...Xin vui lòng đợi trong giây lát !','info');
+                let res = await axios.post('routes/api.php',{
+                    username:this.cookie.username,
+                    password:this.cookie.password,
+                    route:'get-cookie-and-token'
+                })
+                this.toast(res.data.msg,res.data.type);
+                this.data = {
+                    cookie:res.data.cookie,
+                    token:res.data.token
+                }
+                this.loading = false;
+            }
+            catch(e)
+            {
+                this.toast(e,'error');
+                this.loading = false;
+            }
         },
         selectAll()
         {

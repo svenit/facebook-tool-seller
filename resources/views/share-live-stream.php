@@ -31,7 +31,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label>ID Bài Viết</label>
-                                    <div><input data-parsley-type="number" v-model='input.postId' type="text" class="form-control post-id" required="" placeholder=""></div>
+                                    <div><input data-parsley-type="number" v-model='input.postId' type="number" class="form-control post-id" required="" placeholder=""></div>
                                 </div>
                                 <div class="form-group">
                                     <label>Nội dung bài viết ( Cách nhau 1 dòng )</label>

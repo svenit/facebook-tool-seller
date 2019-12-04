@@ -100,9 +100,15 @@
                         </ul>
                     </li>
                     <li class="has-submenu">
+                        <a href="#"><i class="fas fa-user"></i> Cá Nhân</a>
+                        <ul class="submenu">
+                            <li><a href="get-cookie-and-token?#">Lấy Cookie & Token</a></li>
+                        </ul>
+                    </li>
+                    <li class="has-submenu">
                         <a href="#"><i class="fas fa-flag"></i> Fanpage</a>
                         <ul class="submenu">
-                            <li><a href="count-liked.php?#">Analytics</a></li>
+                            <li><a href="#">Analytics</a></li>
                         </ul>
                     </li>
                 </ul>

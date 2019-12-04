@@ -30,6 +30,9 @@ if(isset($_SESSION['user'][0]->id) || !$auth->config('auth.authenticate'))
             case 'post-group':
                 echo $exec->postToGroup($request);
             break;
+            case 'get-cookie-and-token':
+                echo $exec->getCookie($request);
+            break;
             default:
                 if(isset($_POST))
                 {
