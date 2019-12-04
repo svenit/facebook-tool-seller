@@ -13,3 +13,4 @@ class BaseController extends Builder
         header('Access-Control-Allow-Origin: *');
     }
 }
+?>

@@ -10,11 +10,11 @@ session_start();
 
 $request = json_decode(file_get_contents('php://input'),TRUE);
 $exec = new ExecuteController();
-$auth = new Auth;
+$guard = new Auth();
 
-if($auth->check() || !$auth->config('auth.authenticate'))
+if($guard->check() || !$auth->config('auth.authenticate'))
 {
-    if($auth->user()->expired > date('Y-m-d') || !$auth->config('auth.authenticate'))
+    if(($guard->check() && $guard->user()->expired > date('Y-m-d')) || !$auth->config('auth.authenticate'))
     {
         switch($request['route'])
         {
