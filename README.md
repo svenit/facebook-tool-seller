@@ -35,7 +35,11 @@ Mở trình duyệt và gõ : [localhost](http://localhost])
 
 - **Lê Quang Vỹ**
 
-License
+### Gặp Vấn Đề ?
+ 
+ Vui lòng liên hệ Facebook [Lê Quang Vỹ](https://facebook.com/sven307) để được hỗ trợ
+
+BẢN QUYỀN
 ----
 
 MIT
