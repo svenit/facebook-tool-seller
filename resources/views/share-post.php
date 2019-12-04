@@ -83,13 +83,18 @@
                                     <div><textarea v-model='input.groupId' class="form-control page-avoid-id" rows="5"></textarea></div>
                                 </div>
                                 <div class="form-group">
+                                    <label>Không đăng lại trên những nhóm đã đăng trước đó ?</label>
+                                    <input type="checkbox" v-model="blackList" style="margin:5px;">
+                                </div>
+                                <div class="form-group">
                                     <label>Thời gian nghỉ</label>
                                     <div><input v-model='input.sleep' data-parsley-type="number" type="text" class="form-control post-id" required="" placeholder=""></div>
                                 </div>
                                 <div class="form-group">
                                     <div>
-                                        <button :disabled="loading" type="submit" v-if="options.getGroupId == 'custome' && listGroupId.length > 0 || copyListGroupId.length > 0" @click="share(null,null,null,'share-post')" class="btn btn-primary waves-effect waves-light submit">Bắt Đầu ( {{ customeListGroupId.length }} )</button> 
-                                        <button :disabled="loading" type="submit" v-else @click="request('share-post')" class="btn btn-primary waves-effect waves-light submit">{{ options.getGroupId == 'custome' && listGroupId.length == 0 && copyListGroupId.length == 0 ? 'Lấy Danh Sách ID Nhóm' : 'Bắt Đầu' }}</button> 
+                                        <button type="submit" v-if="options.getGroupId == 'custome' && listGroupId.length > 0 || copyListGroupId.length > 0" @click="isStop = !isStop,share(null,null,null,'share-post')" class="btn btn-primary waves-effect waves-light submit">{{ isStop ? `Bắt Đầu ( ${customeListGroupId.length} )` : 'Dừng Lại' }}</button> 
+                                        <button type="submit" v-else-if="options.getGroupId != 'custome'" @click="isStop = !isStop,request('share-post')" class="btn btn-primary waves-effect waves-light submit">{{ isStop ? 'Bắt Đầu' : 'Dừng Lại' }}</button> 
+                                        <button :disabled="loading" type="submit" v-if="options.getGroupId == 'custome' && listGroupId.length == 0 && copyListGroupId.length == 0" @click="request('share-post')" class="btn btn-primary waves-effect waves-light submit">Lấy Danh Sách ID</button> 
                                     </div>
                                 </div>
                                 </form>
