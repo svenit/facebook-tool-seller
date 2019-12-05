@@ -11,6 +11,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
 <script src="public/assets/js/app/vue.js"></script>
+<script src="public/assets/js/facebook/get-id.js"></script>
 <script src="public/assets/js/<?php echo $_SESSION['js'] ?>"></script>
 <script src="public/assets/js/jquery.slimscroll.js"></script>
 <script src="public/assets/js/jquery.sparkline.min.js"></script>

@@ -14,6 +14,8 @@ new Vue({
             cookie: '',
             postId: '',
             content: '',
+            listContent:[],
+            detailContent:{},
             groupId:'',
             sleep: 10
         },
@@ -41,70 +43,110 @@ new Vue({
     methods:{
         async request(route)
         {
-            
             if(this.input.cookie.trim() && this.input.postId.trim())
             {
-                this.listGroupId = [];
-                const cookies = this.input.cookie.split("\n");
-                this.toast('Đang kiểm tra cookie','warning');
-                this.loading = true;
-                for(let key in cookies)
+                if(getId(this.input.postId))
                 {
-                    let res = await axios.post('routes/api.php',{
-                        cookie:cookies[key],
-                        route:'check-cookie'
-                    });
-                    this.toast(res.data.msg,res.data.type);
-                    if(res.data.status == 200)
+                    this.listGroupId = [];
+                    const cookies = this.input.cookie.split("\n");
+                    this.toast('Đang kiểm tra cookie','warning');
+                    this.loading = true;
+                    for(let key in cookies)
                     {
-                        if(this.options.getGroupId == 'all' || this.options.getGroupId == 'custome')
+                        let res = await axios.post('routes/api.php',{
+                            cookie:cookies[key],
+                            route:'check-cookie'
+                        });
+                        this.toast(res.data.msg,res.data.type);
+                        if(res.data.status == 200)
                         {
-                            this.defaultValue = {
-                                cookie:cookies[key],
-                                id:res.data.id,
-                                fb_dtsg:res.data.fb_dtsg
-                            };
-                            await this.getGroupId(cookies[key],res.data.id,res.data.fb_dtsg,route);
-                        }
-                        else
-                        {
-                            this.toast('Đang lấy danh sách nhóm do người dùng nhập','warning');
-                            await this.getGroupId(cookies[key],res.data.id,res.data.fb_dtsg,route);
-                            this.listGroupId = [];
-                            this.input.groupId.split("\n").forEach((each) => {
-                                this.copyListGroupId.forEach((copy) => {
-                                    if(each == copy.id)
-                                    {
-                                        if(this.blackList && copy.published)
-                                        {
-                                            return;
-                                        }
-                                        this.listGroupId.push({
-                                            name:copy.name || 'Không tìm thấy nhóm',
-                                            id:copy.id || 0,
-                                            published:copy.published || false
-                                        });
-                                    }
-                                });
-                            });
-                            this.toast(`Lấy danh sách thành công ! ${this.listGroupId.length} nhóm sẵn sàng !`,'success');
-                            if(this.listGroupId.length > 0)
+                            if(this.options.getGroupId == 'all' || this.options.getGroupId == 'custome')
                             {
-                                await this.share(cookies[key],res.data.id,res.data.fb_dtsg,route);
+                                this.defaultValue = {
+                                    cookie:cookies[key],
+                                    id:res.data.id,
+                                    fb_dtsg:res.data.fb_dtsg
+                                };
+                                await this.getGroupId(cookies[key],res.data.id,res.data.fb_dtsg,route);
                             }
                             else
                             {
-                                this.toast('Không có nhóm nào để thực hiện','error');
+                                this.toast('Đang lấy danh sách nhóm do người dùng nhập','warning');
+                                await this.getGroupId(cookies[key],res.data.id,res.data.fb_dtsg,route);
+                                var list = this.listGroupId;
+                                this.listGroupId = [];
+                                this.input.groupId.split("\n").forEach((each) => {
+                                    list.forEach((copy) => {
+                                        each = getId(each);
+                                        if(each && each == copy.id)
+                                        {
+                                            if(this.blackList && copy.published)
+                                            {
+                                                return;
+                                            }
+                                            this.listGroupId.push({
+                                                name:copy.name || 'Không tìm thấy nhóm',
+                                                id:this.options.getGroupId == 'list' ? copy.id : getId(each),
+                                                published:copy.published || false
+                                            });
+                                        }
+                                    });
+                                });
+                                this.toast(`Lấy danh sách thành công ! ${this.listGroupId.length} nhóm sẵn sàng !`,'success');
+                                if(this.listGroupId.length > 0)
+                                {
+                                    await this.share(cookies[key],res.data.id,res.data.fb_dtsg,route);
+                                }
+                                else
+                                {
+                                    this.toast('Không có nhóm nào để thực hiện','error');
+                                }
                             }
                         }
                     }
+                    this.loading = false;
                 }
-                this.loading = false;
+                else
+                {
+                    swal('','Liên kết bài viết không tồn tại','error');
+                }
             }
             else
             {
                 swal('','Bạn chưa nhập đầy đủ thông tin','info');
             }
+        },
+        insertContent()
+        {
+            if(this.input.content.trim())
+            {
+                this.input.listContent.push(this.input.content);
+            }
+            else
+            {
+                swal('','Không được để trống','warning');
+            }
+        },
+        deleteContent(id)
+        {
+            this.input.listContent.splice(id,1);
+        },
+        editContent(content,id)
+        {
+            this.input.detailContent = {
+                content:content,
+                id:id
+            }
+        },
+        updateContent(content)
+        {
+            this.input.listContent.map((item,key) => {
+                if(key == content.id)
+                {
+                    this.input.listContent[key] = content.content;
+                    this.input.detailContent = {};
+                }
+            });
         },
         async getGroupId(cookie,id,fb_dtsg,path)
         {
@@ -130,10 +172,7 @@ new Vue({
                         {
                             return;
                         }
-                        else
-                        {
-                            list.push(item);
-                        }
+                        list.push(item);
                     });
                     this.listGroupId = await list;
                     this.toast(`${list.length} nhóm sẵn sàng`,'success');
@@ -159,36 +198,38 @@ new Vue({
             {
                 if(this.options.getGroupId == 'custome')
                 {
-                    this.listGroupId = [];
-                    this.customeListGroupId.forEach((item) => {
-                        if(this.blackList && item.published)
+                    var list = [];
+                    for(let i in this.customeListGroupId)
+                    {
+                        if(this.blackList && this.customeListGroupId[i].published)
                         {
-                            return;
+                            continue;
                         }
-                        this.listGroupId.push(item);
-                    });
+                        list.push(this.customeListGroupId[i]);
+                    }
+                    this.listGroupId = await list;
                 }
                 this.loading = true;
                 this.toast(`Đã xác nhận danh sách nhóm ! Chuẩn bị tiến hành`,'info');
                 for(let key in this.listGroupId)
                 {
-                    this.toast(`Còn ${this.listGroupId.length - 1} nhóm nữa`,'info');
+                    this.toast(`Còn ${this.listGroupId.length - (this.listSuccess.length + this.listFail.length)} nhóm nữa`,'info');
                     if(this.isStop)
                     {
                         this.toast('Đã dừng !','success');
                         break;
                     }
-                    const messages = this.input.content.split("\n");
+                    const messages = this.input.listContent;
                     let randomMsg = messages[Math.floor((Math.random() * messages.length))];
                     await this.sleep(1000 * this.input.sleep);
-                    console.log(`%c => ${key}. Tiến hành share bài viết vào nhóm ${this.listGroupId[key].name} ( ${this.listGroupId[key].id} )`,'background: #222; color: #bada55');
-                    this.toast(`Đang tiến hành share bài viết vào nhóm ${this.listGroupId[key].name} ( ${this.listGroupId[key].id} )`,'warning');
+                    console.log(`%c => ${key}. Tiến hành share bài viết vào nhóm ${this.listGroupId[key].name || 'Không tìm thấy'} ( ${this.listGroupId[key].id} )`,'background: #222; color: #bada55');
+                    this.toast(`Đang tiến hành share bài viết vào nhóm ${this.listGroupId[key].name || 'Không tìm thấy'} ( ${this.listGroupId[key].id} )`,'warning');
                     let res = await axios.post('routes/api.php',{
                         cookie:cookie || this.defaultValue.cookie,
                         id:parseInt(id) || parseInt(this.defaultValue.id),
                         fb_dtsg:fb_dtsg || this.defaultValue.fb_dtsg,
                         message:randomMsg,
-                        postId:parseInt(this.input.postId),
+                        postId:parseInt(getId(this.input.postId)),
                         idGroup:parseInt(this.listGroupId[key].id),
                         groupName:this.listGroupId[key].name || 'Không tìm thấy',
                         route:route
@@ -209,8 +250,11 @@ new Vue({
                     {
                         this.isStop = true;
                         swal('','Đã xong','success');
+                        if(this.options.getGroupId == 'custome')
+                        {
+                            this.listGroupId = this.copyListGroupId;
+                        }
                     }
-                    this.listGroupId.shift();
                 }
                 this.loading = false;
             }
@@ -258,7 +302,8 @@ new Vue({
                 this.copyListGroupId.forEach((each) => {
                     this.customeListGroupId.push({
                         id:each.id,
-                        name:each.name
+                        name:each.name,
+                        published:each.published
                     });
                 });
             }
