@@ -75,13 +75,13 @@
                                             </div>
                                         </div>
                                         <div style="margin:10px 0px" class="list-content" v-if="input.listContent.length > 0">
-                                            <div class="list-content-item row" style="margin:10px 0px" v-for="(list,index) in input.listContent" :key="index">
-                                                <div style="padding:0px" class="col-lg-10">
-                                                    <textarea class="form-control page-avoid-id" style="border:0px;height:100%;width:100%" type="text" rows="1" readonly>{{ list }}</textarea>
-                                                </div>
-                                                <div class="col-lg-2">
-                                                    <button type="button" class="btn btn-primary" @click="deleteContent(index)"><i class="fas fa-trash"></i></button>
-                                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editContentModal" @click="editContent(list,index)"><i class="fas fa-pencil-alt"></i></button>
+                                            <div class="list-content-item row" style="margin:10px 0px;position:relative" v-for="(list,index) in input.listContent" :key="index">
+                                                <div style="padding:0px" class="col-lg-12">
+                                                    <textarea class="form-control page-avoid-id" style="border:1px dashed #ccc;height:100%;width:100%;background:#f8f8f8" type="text" rows="1" readonly>{{ list }}</textarea>
+                                                    <div style="position:absolute;right:0;top:0">
+                                                        <button type="button" class="btn btn-default" style="color:#7a6fbe;background:transparent;" @click="deleteContent(index)"><i class="fas fa-trash"></i></button>
+                                                        <button type="button" class="btn btn-default" style="color:#7a6fbe;background:transparent;" data-toggle="modal" data-target="#editContentModal" @click="editContent(list,index)"><i class="fas fa-pencil-alt"></i></button>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
