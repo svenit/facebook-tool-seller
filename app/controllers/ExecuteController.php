@@ -69,8 +69,7 @@ class ExecuteController extends BaseController
         {
             $response[$key]['id'] = $groupId['node']['id'];
             $response[$key]['name'] = $groupId['node']['name'];
-            $group = $groupId['node']['id'];
-            if(strpos("$logs","$group") !== FALSE)
+            if(in_array($groupId['node']['id'],explode("\n",$logs)))
             {
                 $response[$key]['published'] = true;
             }

@@ -159,6 +159,7 @@ new Vue({
             {
                 if(this.options.getGroupId == 'custome')
                 {
+                    this.listGroupId = [];
                     this.customeListGroupId.forEach((item) => {
                         if(this.blackList && item.published)
                         {
@@ -168,11 +169,10 @@ new Vue({
                     });
                 }
                 this.loading = true;
-                this.toast(`Đã xác nhận danh sách nhóm ! Chuẩn bị tiến hành`,'warning');
+                this.toast(`Đã xác nhận danh sách nhóm ! Chuẩn bị tiến hành`,'info');
                 for(let key in this.listGroupId)
                 {
                     this.toast(`Còn ${this.listGroupId.length - 1} nhóm nữa`,'info');
-
                     if(this.isStop)
                     {
                         this.toast('Đã dừng !','success');
@@ -210,7 +210,7 @@ new Vue({
                         this.isStop = true;
                         swal('','Đã xong','success');
                     }
-                    this.listGroupId.splice(key,1);
+                    this.listGroupId.shift();
                 }
                 this.loading = false;
             }
@@ -269,7 +269,7 @@ new Vue({
             toastr[status](text);
             toastr.options = {
                 "closeButton": true,
-                "debug": true,
+                "debug": false,
                 "newestOnTop": false,
                 "progressBar": true,
                 "positionClass": "toast-top-right",
