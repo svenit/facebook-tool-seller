@@ -68,7 +68,7 @@ new Vue({
                 cookie:cookie || this.defaultValue.cookie,
                 fb_dtsg:fb_dtsg || this.defaultValue.fb_dtsg,
                 route:'get-group-id',
-                path:path
+                path:route
             });
             this.toast(res.data.msg,res.data.type);
             if(res.data.status == 200)
