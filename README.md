@@ -33,7 +33,10 @@ $ git clone https://github.com/Juniorsz/facebook-tool-seller.git
 $ cd facebook-tool-seller
 $ composer dump-autoload
 ```
-Mở trình duyệt và gõ : [localhost](http://localhost])
+### Cách lấy Cookie
+
+- Bật F12 vào Network => XHR => Chọn URL "bz" => Kéo xuống phần Request Headers => Copy hết Cookie
+
 ### Nhà Phát Triển
 
 - **Lê Quang Vỹ**
