@@ -29,6 +29,8 @@ PHP >= 5.0
 Máy chủ ảo : [ Xampp ](https://www.apachefriends.org/index.html)  hoặc máy chủ ảo nào..
 
 ```sh
+$ git clone https://github.com/Juniorsz/facebook-tool-seller.git
+$ cd facebook-tool-seller
 $ composer dump-autoload
 ```
 Mở trình duyệt và gõ : [localhost](http://localhost])
