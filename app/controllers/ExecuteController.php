@@ -7,7 +7,7 @@ class ExecuteController extends BaseController
 {
     public function __construct()
     {
-        return parent::__construct();
+        parent::__construct();
     }
     public function checkCookie($request)
     {
